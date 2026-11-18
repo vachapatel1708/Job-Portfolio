@@ -1,0 +1,809 @@
+{% extends "frontend/common/base.html" %}
+
+{% block contain %}
+
+    <section class="relative overflow-hidden bg-white">
+
+        <!-- Decorative Shapes -->
+
+        <div class="absolute -top-24 -right-24 w-80 h-80 bg-blue-100 rounded-full opacity-60">
+        </div>
+
+        <div class="absolute bottom-0 -left-20 w-64 h-64 bg-orange-100 rounded-full opacity-70">
+        </div>
+
+
+        <div class="max-w-7xl mx-auto px-6 py-20 relative">
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+                <!-- LEFT -->
+
+                <div>
+
+                    <div class="inline-flex items-center gap-2 bg-orangeLight text-orangeMain px-4 py-2 rounded-full text-sm font-semibold mb-6">
+
+                        <span class="w-2 h-2 bg-orangeMain rounded-full"></span>
+
+                        Thousands of opportunities waiting for you
+
+                    </div>
+
+
+                    <h1 class="text-5xl md:text-6xl font-extrabold leading-tight text-slate-900">
+
+                        Build Your
+
+                        <span class="text-blueMain">
+                            Future
+                        </span>
+
+                        <br>
+
+                        Find Your
+
+                        <span class="text-orangeMain">
+                            Dream Job.
+                        </span>
+
+                    </h1>
+
+
+                    <p class="text-lg text-slate-500 mt-6 max-w-xl leading-relaxed">
+
+                        Discover the right opportunities, connect with
+                        top companies and take the next step in your
+                        professional journey.
+
+                    </p>
+
+
+                    <!-- SEARCH -->
+
+                    <div class="mt-9 bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-2xl p-3">
+
+                        <div class="grid md:grid-cols-2 gap-3">
+
+                            <!-- Keyword -->
+
+                            <div class="flex items-center gap-3 px-4 py-3 border border-slate-200 rounded-xl">
+
+                                <span class="text-blueMain text-xl">
+                                    🔎
+                                </span>
+
+                                <input type="text" placeholder="Job title, skills..." class="w-full outline-none text-sm">
+
+                            </div>
+
+                            <!-- Button -->
+
+                            <button class="bg-blueMain hover:bg-blueDark text-white font-semibold rounded-xl py-3 transition">
+
+                                Search Jobs
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- QUICK LINKS -->
+
+                    <div class="mt-5 flex flex-wrap gap-3
+                                text-sm text-slate-500">
+
+                        <span>Popular:</span>
+
+                        <a href="#"
+                        class="text-blueMain hover:underline">
+                            Python
+                        </a>
+
+                        <a href="#"
+                        class="text-blueMain hover:underline">
+                            React
+                        </a>
+
+                        <a href="#"
+                        class="text-blueMain hover:underline">
+                            Data Analyst
+                        </a>
+
+                        <a href="#"
+                        class="text-blueMain hover:underline">
+                            UI/UX
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT VISUAL -->
+
+                <div class="relative hidden lg:block">
+
+                    <div class="bg-blueMain
+                                rounded-[3rem]
+                                p-8
+                                rotate-2
+                                shadow-2xl">
+
+                        <div class="bg-white rounded-[2.5rem]
+                                    p-8 -rotate-2">
+
+
+                            <!-- Profile -->
+
+                            <div class="flex items-center
+                                        justify-between mb-8">
+
+                                <div class="flex items-center gap-4">
+
+                                    <div class="w-14 h-14
+                                                rounded-2xl
+                                                bg-orangeLight
+                                                flex items-center
+                                                justify-center
+                                                text-2xl">
+
+                                        👩🏻‍💻
+
+                                    </div>
+
+                                    <div>
+
+                                        <h3 class="font-bold text-lg">
+                                            Your Career
+                                        </h3>
+
+                                        <p class="text-sm text-slate-400">
+                                            Find your perfect match
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <span class="text-orangeMain text-xl">
+                                    ★
+                                </span>
+
+                            </div>
+
+
+                            <!-- Job -->
+
+                            <div class="border border-slate-100
+                                        rounded-2xl p-5 mb-4
+                                        shadow-sm">
+
+                                <div class="flex justify-between">
+
+                                    <div>
+
+                                        <p class="text-sm
+                                                text-slate-400">
+                                            Featured Position
+                                        </p>
+
+                                        <h3 class="font-bold text-lg mt-1">
+                                            Python Developer
+                                        </h3>
+
+                                    </div>
+
+                                    <div class="w-11 h-11
+                                                bg-blue-50
+                                                rounded-xl
+                                                flex items-center
+                                                justify-center">
+
+                                        💼
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="flex gap-2 mt-4">
+
+                                    <span class="bg-blue-50
+                                                text-blueMain
+                                                px-3 py-1
+                                                rounded-full text-xs">
+                                        Python
+                                    </span>
+
+                                    <span class="bg-orangeLight
+                                                text-orangeMain
+                                                px-3 py-1
+                                                rounded-full text-xs">
+                                        Django
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Success -->
+
+                            <div class="bg-orangeLight
+                                        rounded-2xl p-5">
+
+                                <div class="flex items-center
+                                            justify-between">
+
+                                    <div>
+
+                                        <p class="text-sm text-slate-500">
+                                            Successful Matches
+                                        </p>
+
+                                        <h2 class="text-3xl font-extrabold
+                                                text-orangeMain mt-1">
+                                            8,500+
+                                        </h2>
+
+                                    </div>
+
+                                    <div class="text-4xl">
+                                        🎯
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Floating Badge -->
+
+                    <div class="absolute -left-10 top-20
+                                bg-white shadow-xl
+                                rounded-2xl p-4">
+
+                        <div class="flex items-center gap-3">
+
+                            <div class="w-10 h-10
+                                        bg-green-100
+                                        rounded-full
+                                        flex items-center
+                                        justify-center">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <p class="text-xs text-slate-400">
+                                    New Jobs
+                                </p>
+
+                                <p class="font-bold">
+                                    250+ Today
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Floating Badge -->
+
+                    <div class="absolute -right-8 bottom-16
+                                bg-white shadow-xl
+                                rounded-2xl p-4">
+
+                        <div class="flex items-center gap-3">
+
+                            <div class="w-10 h-10
+                                        bg-blue-100
+                                        rounded-full
+                                        flex items-center
+                                        justify-center">
+                                🏢
+                            </div>
+
+                            <div>
+
+                                <p class="text-xs text-slate-400">
+                                    Companies
+                                </p>
+
+                                <p class="font-bold">
+                                    5,000+
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="bg-blueMain">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+
+            <div class="grid grid-cols-2 md:grid-cols-4">
+
+                <!-- ACTIVE JOBS -->
+                <div class="text-center border-r border-blue-400">
+
+                    <h2 class="text-3xl font-extrabold text-white">
+                        {{ active_jobs }}+
+                    </h2>
+
+                    <p class="text-blue-100 text-sm mt-1">
+                        Active Jobs
+                    </p>
+
+                </div>
+
+
+                <!-- COMPANIES -->
+                <div class="text-center md:border-r border-blue-400">
+
+                    <h2 class="text-3xl font-extrabold text-white">
+                        {{ companies }}+
+                    </h2>
+
+                    <p class="text-blue-100 text-sm mt-1">
+                        Companies
+                    </p>
+
+                </div>
+
+
+                <!-- JOB SEEKERS -->
+                <div class="text-center border-r border-blue-400 mt-6 md:mt-0">
+
+                    <h2 class="text-3xl font-extrabold text-white">
+                        {{ job_seekers }}+
+                    </h2>
+
+                    <p class="text-blue-100 text-sm mt-1">
+                        Job Seekers
+                    </p>
+
+                </div>
+
+
+                <!-- SUCCESSFUL HIRES -->
+                <div class="text-center mt-6 md:mt-0">
+
+                    <h2 class="text-3xl font-extrabold text-orange-300">
+                        {{ successful_hires }}+
+                    </h2>
+
+                    <p class="text-blue-100 text-sm mt-1">
+                        Successful Hires
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section id="categories" class="py-20">
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <!-- HEADER -->
+            <div class="flex justify-between items-end mb-10">
+
+                <div>
+
+                    <span class="text-orangeMain font-bold text-sm">
+                        EXPLORE
+                    </span>
+
+                    <h2 class="text-3xl md:text-4xl font-extrabold mt-2">
+                        Browse Job Categories
+                    </h2>
+
+                    <p class="text-slate-500 mt-3">
+                        Find opportunities that match your skills.
+                    </p>
+
+                </div>
+
+                <!-- View All -->
+                <a href="{% url 'jobs' %}"
+                class="hidden md:block text-blueMain font-semibold">
+                    View All →
+                </a>
+
+            </div>
+
+
+            <!-- DYNAMIC CATEGORIES -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+                {% for category in categories %}
+
+                    <a href="{% url 'jobs' %}?category={{ category.id }}"
+                    class="group bg-white border border-slate-200
+                            rounded-2xl p-6
+                            hover:border-blueMain
+                            hover:shadow-lg transition">
+
+                        <div class="w-14 h-14 bg-blue-50 rounded-2xl
+                                    flex items-center justify-center
+                                    text-2xl
+                                    group-hover:bg-blueMain transition">
+
+                            💻
+
+                        </div>
+
+                        <h3 class="font-bold text-lg mt-5
+                                group-hover:text-blueMain">
+
+                            {{ category.name }}
+
+                        </h3>
+
+                        <p class="text-slate-400 text-sm mt-2">
+
+                            {{ category.description }}
+
+                        </p>
+
+                    </a>
+
+                {% empty %}
+
+                    <p class="text-slate-500">
+                        No job categories available.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="jobs" class="py-20 bg-white">
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="text-center mb-12">
+
+                <span class="text-orangeMain font-bold text-sm">
+                    OPPORTUNITIES
+                </span>
+
+                <h2 class="text-3xl md:text-4xl font-extrabold mt-2">
+                    Latest Job Openings
+                </h2>
+
+                <p class="text-slate-500 mt-3">
+                    Explore the latest opportunities from top companies.
+                </p>
+
+            </div>
+
+
+            <div class="grid lg:grid-cols-3 gap-6">
+
+                {% for job in jobs %}
+
+                    <div class="border border-slate-200 rounded-2xl p-6
+                                hover:shadow-xl hover:-translate-y-1 transition">
+
+                        <div class="flex justify-between">
+
+                            <div class="w-12 h-12 bg-blue-50 rounded-xl
+                                        flex items-center justify-center text-xl">
+                                🏢
+                            </div>
+
+                            <button class="text-xl text-slate-300 hover:text-orangeMain">
+                                ♡
+                            </button>
+
+                        </div>
+
+
+                        <!-- JOB TITLE -->
+                        <h3 class="text-xl font-bold mt-5">
+                            {{ job.title }}
+                        </h3>
+
+
+                        <!-- COMPANY -->
+                        <p class="text-slate-500 text-sm mt-1">
+                            {{ job.company }}
+                        </p>
+
+
+                        <!-- SKILLS -->
+                        <div class="flex flex-wrap gap-2 mt-5">
+
+                            <span class="bg-blue-50 text-blueMain px-3 py-1 rounded-full text-xs">
+                                Python
+                            </span>
+
+                            <span class="bg-orangeLight text-orangeMain px-3 py-1 rounded-full text-xs">
+                                Django
+                            </span>
+
+                            <span class="bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-xs">
+                                SQL
+                            </span>
+
+                        </div>
+
+
+                        <!-- SALARY + LOCATION -->
+                        <div class="mt-6 pt-5 border-t border-slate-100
+                                    flex justify-between items-center">
+
+                            <div>
+
+                                <p class="font-bold">
+                                    ₹ {{ job.salary_min }}
+                                </p>
+
+                                <p class="text-xs text-slate-400 mt-1">
+                                    📍 {{ job.location }} • {{ job.job_type }}
+                                </p>
+
+                            </div>
+
+
+                            {% if user.is_authenticated %}
+
+                                <a href="{% url 'apply_job' job.id %}" class="text-blueMain font-semibold">
+                                    Apply →
+                                </a>
+
+                            {% else %}
+
+                                <a href="{% url 'login' %}?next={% url 'apply_job' job.id %}" class="text-blueMain font-semibold">
+                                    Apply →
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <p class="text-slate-500 col-span-3 text-center">
+                        No jobs available.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- EXPLORE ALL JOBS -->
+
+            <div class="text-center mt-10">
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'jobs' %}"
+                    class="inline-flex items-center gap-2
+                            border-2 border-blueMain text-blueMain
+                            px-7 py-3 rounded-xl font-semibold
+                            hover:bg-blueMain hover:text-white transition">
+                        Explore All Jobs →
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'register' %}?next={% url 'jobs' %}"
+                    class="inline-flex items-center gap-2
+                            border-2 border-blueMain text-blueMain
+                            px-7 py-3 rounded-xl font-semibold
+                            hover:bg-blueMain hover:text-white transition">
+                        Explore All Jobs →
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="py-20 bg-slate-50">
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="text-center mb-14">
+
+                <span class="text-orangeMain
+                            font-bold text-sm">
+                    SIMPLE & FAST
+                </span>
+
+                <h2 class="text-3xl md:text-4xl
+                        font-extrabold mt-2">
+                    How It Works
+                </h2>
+
+            </div>
+
+
+            <div class="grid md:grid-cols-3 gap-10">
+
+
+                <div class="text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                bg-blueMain
+                                text-white
+                                rounded-3xl
+                                flex items-center
+                                justify-center
+                                text-3xl
+                                shadow-lg
+                                shadow-blue-200">
+
+                        👤
+
+                    </div>
+
+                    <h3 class="font-bold text-xl mt-6">
+                        Create Profile
+                    </h3>
+
+                    <p class="text-slate-500 mt-3">
+                        Build your professional profile and showcase
+                        your skills, experience and achievements.
+                    </p>
+
+                </div>
+
+
+                <div class="text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                bg-orangeMain
+                                text-white
+                                rounded-3xl
+                                flex items-center
+                                justify-center
+                                text-3xl
+                                shadow-lg
+                                shadow-orange-200">
+
+                        🔎
+
+                    </div>
+
+                    <h3 class="font-bold text-xl mt-6">
+                        Search & Apply
+                    </h3>
+
+                    <p class="text-slate-500 mt-3">
+                        Discover relevant jobs and apply to positions
+                        that match your career goals.
+                    </p>
+
+                </div>
+
+
+                <div class="text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                bg-blueMain
+                                text-white
+                                rounded-3xl
+                                flex items-center
+                                justify-center
+                                text-3xl
+                                shadow-lg
+                                shadow-blue-200">
+
+                        🎯
+
+                    </div>
+
+                    <h3 class="font-bold text-xl mt-6">
+                        Get Hired
+                    </h3>
+
+                    <p class="text-slate-500 mt-3">
+                        Connect with employers, attend interviews
+                        and land your dream job.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="py-20">
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="relative overflow-hidden
+                        bg-blueMain
+                        rounded-[2rem]
+                        px-8 py-14 md:px-16">
+
+                <!-- Decorative -->
+
+                <div class="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-white/10">
+                </div>
+
+
+                <div class="relative
+                            flex flex-col md:flex-row
+                            items-center
+                            justify-between gap-8">
+
+                    <div class="text-white">
+
+                        <span class="text-orange-300 font-bold text-sm">
+                            FOR EMPLOYERS
+                        </span>
+
+                        <h2 class="text-3xl md:text-4xl font-extrabold mt-3">
+                            Find the right talent
+                            for your team.
+                        </h2>
+
+                        <p class="text-blue-100 mt-4 max-w-xl">
+                            Post your job openings and connect
+                            with talented professionals looking
+                            for their next opportunity.
+                        </p>
+
+                    </div>
+
+
+                    {% if user.is_authenticated %}
+
+                        <a href="{% url 'post_job' %}" class="bg-orangeMain hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-bold whitespace-nowrap transition shadow-lg">
+                            Post a Job →
+                        </a>
+
+                    {% else %}
+
+                        <a href="{% url 'login' %}?next={% url 'post_job' %}" class="bg-orangeMain hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-bold whitespace-nowrap transition shadow-lg">
+                            Post a Job →
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock contain %}

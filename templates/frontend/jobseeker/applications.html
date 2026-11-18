@@ -1,0 +1,138 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+    <div class="p-6 lg:p-8">
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">My Applications</h1>
+                <p class="text-sm text-slate-400 mt-1">Track all your job applications in one place.</p>
+            </div>
+            <a href="/jobs" class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm">
+                Find More Jobs
+            </a>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
+            <div class="bg-white border border-slate-200 rounded-2xl p-5">
+                <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">📄</div>
+                <p class="text-2xl font-extrabold mt-4"> {{ total_applications }} </p>
+                <p class="text-xs text-slate-400">Total Applications</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-5">
+                <div class="w-11 h-11 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">⏳</div>
+                <p class="text-2xl font-extrabold mt-4"> {{ under_review }} </p>
+                <p class="text-xs text-slate-400">Under Review</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-5">
+                <div class="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">⭐</div>
+                <p class="text-2xl font-extrabold mt-4"> {{ shortlisted }} </p>
+                <p class="text-xs text-slate-400">Shortlisted</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-5">
+                <div class="w-11 h-11 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">✓</div>
+                <p class="text-2xl font-extrabold mt-4"> {{ selected }} </p>
+                <p class="text-xs text-slate-400">Selected</p>
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 border-b border-slate-100">
+                <div>
+                    <h2 class="text-lg font-extrabold">Application History</h2>
+                    <p class="text-xs text-slate-400 mt-1">View and track your recent applications.</p>
+                </div>
+                <select class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none">
+                    <option>All Applications</option>
+                    <option>Under Review</option>
+                    <option>Shortlisted</option>
+                    <option>Selected</option>
+                    <option>Rejected</option>
+                </select>
+            </div>
+            <div class="divide-y divide-slate-100">
+                {% for application in applications %}
+
+                    <div class="p-5 md:p-6">
+                        <div class="flex flex-col lg:flex-row lg:items-center gap-5">
+                            <div class="w-14 h-14 bg-green-50 text-green-600 rounded-xl flex items-center justify-center font-extrabold">
+                                {{ application.job.company.company_name|first|upper }}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                    <h3 class="text-sm font-extrabold">
+                                        {{ application.job.title }}
+                                    </h3>
+                                    {% if application.status == "Applied" %}
+                                        <span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-bold w-fit">
+                                            Applied
+                                        </span>
+                                    {% elif application.status == "Under Review" %}
+                                        <span class="px-2.5 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-bold w-fit">
+                                            Under Review
+                                        </span>
+                                    {% elif application.status == "Shortlisted" %}
+                                        <span class="px-2.5 py-1 bg-green-50 text-green-600 rounded-lg text-[10px] font-bold w-fit">
+                                            Shortlisted
+                                        </span>
+                                    {% elif application.status == "Interview" %}
+                                        <span class="px-2.5 py-1 bg-purple-50 text-purple-600 rounded-lg text-[10px] font-bold w-fit">
+                                            Interview
+                                        </span>
+                                    {% elif application.status == "Selected" %}
+                                        <span class="px-2.5 py-1 bg-green-100 text-green-700 rounded-lg text-[10px] font-bold w-fit">
+                                            Selected
+                                        </span>
+                                    {% elif application.status == "Rejected" %}
+                                        <span class="px-2.5 py-1 bg-red-50 text-red-600 rounded-lg text-[10px] font-bold w-fit">
+                                            Rejected
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <p class="text-xs text-slate-500 mt-1">
+                                    {{ application.job.company.company_name }}
+                                </p>
+                                <div class="flex flex-wrap gap-4 mt-3">
+                                    <span class="text-xs text-slate-400">
+                                        📍 {{ application.job.location }}
+                                    </span>
+                                    <span class="text-xs text-slate-400">
+                                        💼 {{ application.job.job_type }}
+                                    </span>
+                                    <span class="text-xs text-slate-400">
+                                        Applied {{ application.applied_date|date:"d M Y" }}
+                                    </span>
+                                </div>
+                            </div>
+                            <a href="{% url 'application_detail' application.id %}"
+                            class="px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-xl text-xs font-bold text-center">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+
+                {% empty %}
+
+                    <div class="p-10 text-center">
+                        <div class="text-4xl mb-3">
+                            📄
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-700">
+                            No Applications Yet
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1">
+                            You haven't applied for any jobs yet.
+                        </p>
+                        <a href="{% url 'jobs' %}"
+                        class="inline-block mt-5 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm">
+                            Find Jobs
+                        </a>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock contain %}

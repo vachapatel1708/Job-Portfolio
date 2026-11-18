@@ -1,0 +1,141 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <div class="mb-7">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">Upload Resume</h1>
+        <p class="text-sm text-slate-400 mt-1">Upload your latest resume to apply for jobs.</p>
+    </div>
+
+    <div class="grid xl:grid-cols-3 gap-6">
+
+        <div class="xl:col-span-2 bg-white border border-slate-200 rounded-2xl p-6">
+
+            <div class="mb-6">
+                <h2 class="text-lg font-extrabold">Upload Your Resume</h2>
+                <p class="text-xs text-slate-400 mt-1">Choose a PDF or DOC/DOCX file from your device.</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <label for="resume" class="block cursor-pointer">
+
+                    <div class="border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-8 md:p-12 text-center transition">
+
+                        <div class="w-16 h-16 mx-auto bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+                            📄
+                        </div>
+
+                        <h3 class="text-base font-extrabold mt-5">
+                            Choose your resume
+                        </h3>
+
+                        <p class="text-sm text-slate-400 mt-2">
+                            Click to browse or drag and drop your file here
+                        </p>
+
+                        <p class="text-xs text-slate-400 mt-3">
+                            PDF, DOC or DOCX • Maximum 5MB
+                        </p>
+
+                        <input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" class="hidden">
+
+                    </div>
+
+                </label>
+
+                <div class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                    <div class="flex gap-3">
+                        <div class="text-blue-600">ℹ</div>
+                        <div>
+                            <p class="text-sm font-bold text-blue-700">Resume Requirements</p>
+                            <p class="text-xs text-blue-600 mt-1">
+                                Make sure your resume contains your education, skills, experience and contact information.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-end gap-3 mt-6">
+                    <a href="/jobseeker/resume" class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-sm text-center">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm">
+                        Upload Resume
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <h2 class="text-lg font-extrabold">Resume Guidelines</h2>
+            <p class="text-xs text-slate-400 mt-1">Follow these tips for a better resume.</p>
+
+            <div class="space-y-5 mt-6">
+
+                <div class="flex gap-3">
+                    <div class="w-9 h-9 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+                        1
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">Keep it concise</p>
+                        <p class="text-xs text-slate-400 mt-1">Try to keep your resume clear and easy to read.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <div class="w-9 h-9 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center">
+                        2
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">Highlight relevant skills</p>
+                        <p class="text-xs text-slate-400 mt-1">Mention skills that match your target job.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <div class="w-9 h-9 bg-green-50 text-green-600 rounded-lg flex items-center justify-center">
+                        3
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">Add your achievements</p>
+                        <p class="text-xs text-slate-400 mt-1">Include projects, certifications and achievements.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <div class="w-9 h-9 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center">
+                        4
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">Use a professional format</p>
+                        <p class="text-xs text-slate-400 mt-1">Avoid unnecessary graphics and complicated layouts.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-slate-100 mt-6 pt-5">
+                <p class="text-xs text-slate-400">Supported formats</p>
+
+                <div class="flex gap-2 mt-3">
+                    <span class="px-3 py-2 bg-red-50 text-red-600 rounded-lg text-xs font-bold">PDF</span>
+                    <span class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">DOC</span>
+                    <span class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">DOCX</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock contain %}

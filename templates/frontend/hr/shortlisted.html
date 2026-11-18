@@ -1,0 +1,270 @@
+{% extends "frontend/hr/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Shortlisted Candidates
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-1">
+                Manage candidates who have been shortlisted
+            </p>
+        </div>
+
+        <a href="{% url 'hr_applications' %}"
+           class="px-5 py-3 border border-slate-200 bg-white text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50">
+            All Applications
+        </a>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+
+        <!-- Total Shortlisted -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Total Shortlisted
+            </p>
+
+            <p class="text-2xl font-extrabold text-purple-600 mt-2">
+                {{ applications|length }}
+            </p>
+
+        </div>
+
+
+        <!-- Interview Pending -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Interview Pending
+            </p>
+
+            <p class="text-2xl font-extrabold text-orange-500 mt-2">
+                {{ applications|length }}
+            </p>
+
+        </div>
+
+
+        <!-- Interview Completed -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Interview Completed
+            </p>
+
+            <p class="text-2xl font-extrabold text-green-600 mt-2">
+                0
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CARD -->
+    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+
+
+        <!-- SEARCH / FILTER -->
+        <div class="p-5 border-b border-slate-100">
+
+            <div class="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+
+                <div class="relative w-full lg:w-80">
+
+                    <input
+                        type="text"
+                        id="candidateSearch"
+                        placeholder="Search candidate..."
+                        class="w-full px-4 py-3 pl-10 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm"
+                    >
+
+                    <span class="absolute left-4 top-3 text-slate-400">
+                        ⌕
+                    </span>
+
+                </div>
+
+
+                <select
+                    id="jobFilter"
+                    class="px-4 py-3 border border-slate-200 rounded-xl outline-none text-sm text-slate-600"
+                >
+
+                    <option value="all">
+                        All Jobs
+                    </option>
+
+                    {% for application in applications %}
+
+                        <option value="{{ application.job.title }}">
+                            {{ application.job.title }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- CANDIDATES -->
+        <div id="candidateList" class="divide-y divide-slate-100">
+
+            {% for application in applications %}
+
+                <div
+                    class="candidate-item p-5 hover:bg-slate-50 transition"
+                    data-name="{{ application.job_seeker.get_full_name|lower }}"
+                    data-job="{{ application.job.title }}"
+                >
+
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-5">
+
+
+                        <!-- PROFILE ICON -->
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-extrabold flex-shrink-0">
+
+                            {% if application.job_seeker.first_name %}
+                                {{ application.job_seeker.first_name|slice:":1"|upper }}{{ application.job_seeker.last_name|slice:":1"|upper }}
+                            {% else %}
+                                {{ application.job_seeker.username|slice:":2"|upper }}
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- CANDIDATE DETAILS -->
+                        <div class="flex-1 min-w-0">
+
+                            <h3 class="text-sm font-extrabold text-slate-900">
+
+                                {% if application.job_seeker.get_full_name %}
+                                    {{ application.job_seeker.get_full_name }}
+                                {% else %}
+                                    {{ application.job_seeker.username }}
+                                {% endif %}
+
+                            </h3>
+
+
+                            <p class="text-xs text-slate-400 mt-1">
+
+                                {{ application.job.title }}
+
+                                • Shortlisted
+                                {{ application.updated_at|date:"d M Y" }}
+
+                            </p>
+
+
+                            <!-- SKILLS -->
+                            {% if application.job_seeker.jobseekerprofile.skills %}
+
+                                <div class="flex flex-wrap gap-2 mt-3">
+
+                                    {% for skill in application.job_seeker.jobseekerprofile.skills|slice:":100"|cut:" "|slice:":50" %}
+
+                                    {% endfor %}
+
+                                    <span class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px]">
+                                        Candidate
+                                    </span>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- STATUS -->
+                        <div class="text-left lg:text-center">
+
+                            <p class="text-sm font-bold text-purple-600">
+                                Shortlisted
+                            </p>
+
+                            <p class="text-xs text-slate-400 mt-1">
+                                Application Status
+                            </p>
+
+                        </div>
+
+
+                        <!-- VIEW BUTTON -->
+                        <a
+                            href="{% url 'hr_application_detail' application.id %}"
+                            class="px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs font-bold text-center"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <!-- EMPTY STATE -->
+                <div class="p-12 text-center">
+
+                    <div class="w-16 h-16 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-3xl mx-auto">
+                        ⭐
+                    </div>
+
+                    <h3 class="text-lg font-extrabold text-slate-700 mt-5">
+                        No Shortlisted Candidates
+                    </h3>
+
+                    <p class="text-sm text-slate-400 mt-2 max-w-md mx-auto">
+                        Candidates that you shortlist will appear here.
+                    </p>
+
+                    <a
+                        href="{% url 'hr_applications' %}"
+                        class="inline-block mt-5 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold"
+                    >
+                        View Applications →
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- FOOTER -->
+        {% if applications %}
+
+        <div class="flex items-center justify-between p-5 border-t border-slate-100">
+
+            <p class="text-xs text-slate-400">
+                Showing {{ applications|length }} shortlisted candidate{{ applications|length|pluralize }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+{% endblock %}

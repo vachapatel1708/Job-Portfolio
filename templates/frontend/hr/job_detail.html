@@ -1,0 +1,580 @@
+{% extends "frontend/hr/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Job Details
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-1">
+                View complete information about this job posting
+            </p>
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+        <div class="flex gap-3">
+
+            <!-- EDIT JOB -->
+            <a
+                href="{% url 'edit_job' job.id %}"
+                class="px-5 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-bold"
+            >
+                Edit Job
+            </a>
+
+
+            <!-- BACK -->
+            <a
+                href="{% url 'manage_jobs' %}"
+                class="px-5 py-3 border border-slate-200 bg-white text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50"
+            >
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- JOB HEADER CARD -->
+    <!-- ===================================================== -->
+
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 mb-6">
+
+        <div class="flex flex-col md:flex-row md:items-center gap-5">
+
+
+            <!-- JOB ICON -->
+            <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+                💼
+            </div>
+
+
+            <!-- JOB BASIC INFORMATION -->
+            <div class="flex-1">
+
+                <div class="flex flex-wrap items-center gap-3">
+
+                    <h2 class="text-2xl font-extrabold text-slate-900">
+                        {{ job.title }}
+                    </h2>
+
+
+                    <!-- STATUS -->
+                    {% if job.status == "Active" %}
+
+                        <span class="px-3 py-1 bg-green-50 text-green-600 rounded-lg text-xs font-bold">
+                            Active
+                        </span>
+
+                    {% elif job.status == "Closed" %}
+
+                        <span class="px-3 py-1 bg-red-50 text-red-600 rounded-lg text-xs font-bold">
+                            Closed
+                        </span>
+
+                    {% elif job.status == "Draft" %}
+
+                        <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-lg text-xs font-bold">
+                            Draft
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- COMPANY + LOCATION -->
+                <p class="text-sm text-slate-500 mt-2">
+
+                    {{ job.company.company_name }}
+
+                    {% if job.location %}
+                        • {{ job.location }}
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- APPLICATION COUNT -->
+            <div class="text-left md:text-right">
+
+                <p class="text-2xl font-extrabold text-blue-600">
+                    {{ job.applications.count }}
+                </p>
+
+                <p class="text-xs text-slate-400">
+                    Applications
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- JOB QUICK DETAILS -->
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-7 pt-6 border-t border-slate-100">
+
+
+            <!-- JOB TYPE -->
+            <div>
+
+                <p class="text-xs text-slate-400">
+                    Job Type
+                </p>
+
+                <p class="text-sm font-bold text-slate-700 mt-1">
+                    {{ job.job_type }}
+                </p>
+
+            </div>
+
+
+            <!-- EXPERIENCE -->
+            <div>
+
+                <p class="text-xs text-slate-400">
+                    Experience
+                </p>
+
+                <p class="text-sm font-bold text-slate-700 mt-1">
+                    {{ job.experience }}
+                </p>
+
+            </div>
+
+
+            <!-- SALARY -->
+            <div>
+
+                <p class="text-xs text-slate-400">
+                    Salary
+                </p>
+
+                <p class="text-sm font-bold text-slate-700 mt-1">
+
+                    {% if job.salary_min and job.salary_max %}
+
+                        ₹{{ job.salary_min }} - ₹{{ job.salary_max }}
+
+                    {% elif job.salary_min %}
+
+                        ₹{{ job.salary_min }}+
+
+                    {% elif job.salary_max %}
+
+                        Up to ₹{{ job.salary_max }}
+
+                    {% else %}
+
+                        Not specified
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- POSTED DATE -->
+            <div>
+
+                <p class="text-xs text-slate-400">
+                    Posted On
+                </p>
+
+                <p class="text-sm font-bold text-slate-700 mt-1">
+                    {{ job.created_at|date:"d M Y" }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ===================================================== -->
+
+    <div class="grid lg:grid-cols-3 gap-6">
+
+
+        <!-- ================================================= -->
+        <!-- LEFT SIDE -->
+        <!-- ================================================= -->
+
+        <div class="lg:col-span-2 space-y-6">
+
+
+            <!-- JOB DESCRIPTION -->
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Job Description
+                </h2>
+
+                {% if job.description %}
+
+                    <p class="text-sm text-slate-500 leading-7 mt-4 whitespace-pre-line">
+                        {{ job.description }}
+                    </p>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-4">
+                        No job description added.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- REQUIREMENTS -->
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Requirements
+                </h2>
+
+                {% if job.requirements %}
+
+                    <div class="text-sm text-slate-500 leading-7 mt-4 whitespace-pre-line">
+                        {{ job.requirements }}
+                    </div>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-4">
+                        No requirements added.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- RESPONSIBILITIES -->
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Responsibilities
+                </h2>
+
+                {% if job.responsibilities %}
+
+                    <div class="text-sm text-slate-500 leading-7 mt-4 whitespace-pre-line">
+                        {{ job.responsibilities }}
+                    </div>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-4">
+                        No responsibilities added.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- REQUIRED SKILLS -->
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Required Skills
+                </h2>
+
+
+                <div class="flex flex-wrap gap-3 mt-5">
+
+                    {% for skill in job.skills.all %}
+
+                        <span class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-semibold">
+                            {{ skill.name }}
+                        </span>
+
+                    {% empty %}
+
+                        <p class="text-sm text-slate-400">
+                            No skills added.
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- RIGHT SIDE -->
+        <!-- ================================================= -->
+
+        <div class="space-y-6">
+
+
+            <!-- JOB SUMMARY -->
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Job Summary
+                </h2>
+
+
+                <div class="space-y-5 mt-5">
+
+
+                    <!-- CATEGORY -->
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Category
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                            {% if job.category %}
+
+                                {{ job.category.name }}
+
+                            {% else %}
+
+                                Not specified
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- OPENINGS -->
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Openings
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                            {{ job.vacancies }}
+
+                            {% if job.vacancies == 1 %}
+                                Position
+                            {% else %}
+                                Positions
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- WORK MODE -->
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Work Mode
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+                            {{ job.work_mode }}
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- LOCATION -->
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Location
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+                            {{ job.location }}
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- APPLICATION DEADLINE -->
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Deadline
+                        </p>
+
+                        {% if job.application_deadline %}
+
+                            <p class="text-sm font-semibold text-red-500 mt-1">
+                                {{ job.application_deadline|date:"d M Y" }}
+                            </p>
+
+                        {% else %}
+
+                            <p class="text-sm font-semibold text-slate-400 mt-1">
+                                Not specified
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- APPLICATION EMAIL -->
+
+                    {% if job.application_email %}
+
+                        <div>
+
+                            <p class="text-xs text-slate-400">
+                                Application Email
+                            </p>
+
+                            <p class="text-sm font-semibold text-blue-600 mt-1 break-all">
+                                {{ job.application_email }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- APPLICATION STATISTICS -->
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Application Statistics
+                </h2>
+
+
+                <div class="space-y-4 mt-5">
+
+
+                    <!-- TOTAL -->
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-sm text-slate-500">
+                            Total Applications
+                        </span>
+
+                        <span class="text-sm font-bold text-slate-900">
+                            {{ job.applications.count }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- SHORTLISTED -->
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-sm text-slate-500">
+                            Shortlisted
+                        </span>
+
+                        <span class="text-sm font-bold text-orange-500">
+
+                            {{ job.applications.filter.count }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- SELECTED -->
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-sm text-slate-500">
+                            Selected
+                        </span>
+
+                        <span class="text-sm font-bold text-green-600">
+                            0
+                        </span>
+
+                    </div>
+
+
+                    <!-- REJECTED -->
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-sm text-slate-500">
+                            Rejected
+                        </span>
+
+                        <span class="text-sm font-bold text-red-500">
+                            0
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VIEW APPLICATIONS -->
+
+                <a
+                    href="{% url 'hr_applications' %}"
+                    class="block text-center mt-6 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold"
+                >
+                    View Applications
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

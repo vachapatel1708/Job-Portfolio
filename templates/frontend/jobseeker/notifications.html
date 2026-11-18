@@ -1,0 +1,244 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+    <div class="p-6 lg:p-8">
+
+        <!-- PAGE HEADER -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+            <div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800">
+                    Notifications 🔔
+                </h1>
+
+                <p class="text-sm text-slate-400 mt-1">
+                    Stay updated with your job applications and career activities.
+                </p>
+            </div>
+
+            {% if notifications %}
+            <a href="{% url 'mark_all_notifications_read' %}"
+            class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm text-center">
+                ✓ Mark All as Read
+            </a>
+            {% endif %}
+
+        </div>
+
+
+        <!-- NOTIFICATIONS CARD -->
+        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+
+            <!-- CARD HEADER -->
+            <div class="p-6 border-b border-slate-100">
+
+                <div class="flex items-center justify-between">
+
+                    <div>
+                        <h2 class="text-lg font-extrabold text-slate-800">
+                            All Notifications
+                        </h2>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            Your latest updates and messages
+                        </p>
+                    </div>
+
+                    <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                        🔔
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTIFICATION LIST -->
+            <div class="divide-y divide-slate-100">
+
+                {% for notification in notifications %}
+
+                    <div class="p-5 md:p-6 flex gap-4
+                        {% if not notification.is_read %}
+                            bg-blue-50/40
+                        {% else %}
+                            bg-white
+                        {% endif %}
+                        hover:bg-slate-50 transition">
+
+                        <!-- ICON -->
+                        <div class="flex-shrink-0">
+
+                            {% if notification.notification_type == "Application" %}
+
+                                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                                    📄
+                                </div>
+
+                            {% elif notification.notification_type == "Job" %}
+
+                                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                                    💼
+                                </div>
+
+                            {% else %}
+
+                                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
+                                    🔔
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- CONTENT -->
+                        <div class="flex-1 min-w-0">
+
+                            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
+
+                                <div>
+
+                                    <div class="flex items-center gap-2">
+
+                                        <h3 class="text-sm font-extrabold text-slate-800">
+                                            {{ notification.title }}
+                                        </h3>
+
+                                        {% if not notification.is_read %}
+
+                                            <span class="px-2 py-0.5 bg-blue-600 text-white rounded-full text-[10px] font-bold">
+                                                NEW
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                                        {{ notification.message }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DATE + ACTION -->
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
+
+                                <p class="text-[11px] text-slate-400">
+                                    🕒 {{ notification.created_at|date:"d M Y, h:i A" }}
+                                </p>
+
+
+                                {% if not notification.is_read %}
+
+                                    <a href="{% url 'mark_notification_read' notification.id %}"
+                                    class="text-xs text-blue-600 hover:text-blue-700 font-bold">
+                                        Mark as read →
+                                    </a>
+
+                                {% else %}
+
+                                    <span class="text-xs text-green-600 font-bold">
+                                        ✓ Read
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <!-- EMPTY STATE -->
+
+                    <div class="p-10 md:p-14 text-center">
+
+                        <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto">
+                            🔔
+                        </div>
+
+                        <h3 class="text-lg font-extrabold text-slate-700 mt-5">
+                            No Notifications
+                        </h3>
+
+                        <p class="text-sm text-slate-400 mt-2 max-w-md mx-auto">
+                            You don't have any notifications yet.
+                            Apply for jobs and we'll keep you updated about your applications.
+                        </p>
+
+                        <a href="{% url 'jobs' %}"
+                        class="inline-block mt-5 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold">
+                            Find Jobs →
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+
+            <a href="{% url 'jobs' %}"
+            class="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl text-center transition">
+
+                <div class="text-xl">💼</div>
+
+                <p class="text-xs font-bold text-blue-600 mt-2">
+                    Find Jobs
+                </p>
+
+            </a>
+
+
+            <a href="{% url 'applications' %}"
+            class="p-4 bg-orange-50 hover:bg-orange-100 rounded-xl text-center transition">
+
+                <div class="text-xl">📄</div>
+
+                <p class="text-xs font-bold text-orange-600 mt-2">
+                    Applications
+                </p>
+
+            </a>
+
+
+            <a href="{% url 'resume' %}"
+            class="p-4 bg-green-50 hover:bg-green-100 rounded-xl text-center transition">
+
+                <div class="text-xl">📑</div>
+
+                <p class="text-xs font-bold text-green-600 mt-2">
+                    My Resume
+                </p>
+
+            </a>
+
+
+            <a href="{% url 'profile' %}"
+            class="p-4 bg-purple-50 hover:bg-purple-100 rounded-xl text-center transition">
+
+                <div class="text-xl">👤</div>
+
+                <p class="text-xs font-bold text-purple-600 mt-2">
+                    My Profile
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+{% endblock contain %}

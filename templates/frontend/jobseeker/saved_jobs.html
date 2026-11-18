@@ -1,0 +1,207 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Saved Jobs
+            </h1>
+
+            <p class="text-sm text-slate-400 mt-1">
+                Keep track of jobs you want to apply for later.
+            </p>
+        </div>
+
+        <a href="{% url 'jobs' %}"
+           class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm">
+
+            Find More Jobs
+
+        </a>
+
+    </div>
+
+
+    <!-- Saved Jobs Summary -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-6">
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                    🔖
+                </div>
+
+                <div>
+
+                    <p class="text-lg font-extrabold">
+                        {{ saved_count }} Saved Jobs
+                    </p>
+
+                    <p class="text-xs text-slate-400">
+                        Jobs you've saved for later
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Saved Jobs -->
+    <div class="grid xl:grid-cols-2 gap-5">
+
+        {% for saved in saved_jobs %}
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <div class="flex items-start gap-4">
+
+                <!-- Company Initial -->
+                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-extrabold">
+
+                    {{ saved.job.company.company_name|first|upper }}
+
+                </div>
+
+
+                <div class="flex-1">
+
+                    <!-- Job Title + Remove -->
+                    <div class="flex items-start justify-between gap-3">
+
+                        <div>
+
+                            <h2 class="text-base font-extrabold">
+                                {{ saved.job.title }}
+                            </h2>
+
+                            <p class="text-sm text-slate-500 mt-1">
+                                {{ saved.job.company.company_name }}
+                            </p>
+
+                        </div>
+
+
+                        <!-- Remove Saved Job -->
+                        <a href="{% url 'remove_saved_job' saved.job.id %}"
+                           class="w-9 h-9 bg-red-50 hover:bg-red-100 text-red-500 rounded-lg flex items-center justify-center">
+
+                            ♥
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- Job Information -->
+                    <div class="flex flex-wrap gap-3 mt-4">
+
+                        <span class="text-xs text-slate-400">
+                            📍 {{ saved.job.location }}
+                        </span>
+
+                        <span class="text-xs text-slate-400">
+                            💼 {{ saved.job.job_type }}
+                        </span>
+
+                        {% if saved.job.salary_min and saved.job.salary_max %}
+
+                        <span class="text-xs text-slate-400">
+                            💰 ₹{{ saved.job.salary_min }} - ₹{{ saved.job.salary_max }}
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Skills -->
+                    <div class="flex flex-wrap gap-2 mt-4">
+
+                        {% for skill in saved.job.skills.all %}
+
+                        <span class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">
+
+                            {{ skill.name }}
+
+                        </span>
+
+                        {% empty %}
+
+                        <span class="text-xs text-slate-400">
+                            No skills specified
+                        </span>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- Bottom -->
+                    <div class="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-100">
+
+                        <p class="text-xs text-slate-400">
+
+                            Saved {{ saved.saved_at|date:"d M Y" }}
+
+                        </p>
+
+
+                        <a href="{% url 'job_detail' saved.job.id %}"
+                           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold">
+
+                            View Job
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <!-- No Saved Jobs -->
+        <div class="xl:col-span-2 bg-white border border-slate-200 rounded-2xl p-10 text-center">
+
+            <div class="text-5xl mb-4">
+                🔖
+            </div>
+
+            <h2 class="text-xl font-extrabold text-slate-800">
+                No Saved Jobs
+            </h2>
+
+            <p class="text-sm text-slate-400 mt-2">
+                You haven't saved any jobs yet.
+            </p>
+
+            <a href="{% url 'jobs' %}"
+               class="inline-block mt-5 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm">
+
+                Find Jobs
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock contain %}

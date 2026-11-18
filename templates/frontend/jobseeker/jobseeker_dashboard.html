@@ -1,0 +1,173 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 md:p-8 text-white mb-7">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+            <div>
+                <p class="text-blue-100 text-sm font-medium">Welcome back 👋</p>
+                <h1 class="text-2xl md:text-3xl font-extrabold mt-1">Find Your Dream Job</h1>
+                <p class="text-blue-100 text-sm mt-2">Discover jobs, apply to opportunities and build your career.</p>
+            </div>
+
+            <a href="{% url 'jobs' %}" class="px-5 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold">
+                Find Jobs →
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+            <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">💼</div>
+            <p class="text-2xl font-extrabold mt-4"> {{ applied_jobs_count }} </p>
+            <p class="text-xs text-slate-400">Applied Jobs</p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+            <div class="w-11 h-11 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">🔖</div>
+            <p class="text-2xl font-extrabold mt-4"> {{ saved_jobs_count }} </p>
+            <p class="text-xs text-slate-400">Saved Jobs</p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+            <div class="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">⭐</div>
+            <p class="text-2xl font-extrabold mt-4"> {{ interview_count }} </p>
+            <p class="text-xs text-slate-400">Interviews</p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+            <div class="w-11 h-11 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">👁</div>
+            <p class="text-2xl font-extrabold mt-4"> {{ profile_views }} </p>
+            <p class="text-xs text-slate-400">Profile Views</p>
+        </div>
+
+    </div>
+
+    <div class="grid xl:grid-cols-3 gap-6">
+
+        <div class="xl:col-span-2 bg-white border border-slate-200 rounded-2xl">
+
+            <div class="flex items-center justify-between p-6 border-b border-slate-100">
+                <div>
+                    <h2 class="text-lg font-extrabold">Recent Applications</h2>
+                    <p class="text-xs text-slate-400 mt-1">Track your latest job applications</p>
+                </div>
+
+                <a href="{% url 'applications' %}" class="text-sm text-blue-600 font-bold">
+                    View All →
+                </a>
+            </div>
+
+            <div class="divide-y divide-slate-100">
+                {% for application in recent_applications %}
+                    <div class="p-5 flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+                            {{ application.job.company.name|first|upper }}
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold">
+                                {{ application.job.title }}
+                            </h3>
+                            <p class="text-xs text-slate-400">
+                                {{ application.job.company.name }}
+                            </p>
+                            <p class="text-[11px] text-slate-400 mt-1">
+                                Applied on {{ application.applied_date|date:"d M Y" }}
+                            </p>
+                        </div>
+                        {% if application.status == "Applied" %}
+
+                            <span class="px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-xs font-bold">
+                                {{ application.status }}
+                            </span>
+
+                        {% elif application.status == "Under Review" %}
+
+                            <span class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">
+                                {{ application.status }}
+                            </span>
+
+                        {% elif application.status == "Shortlisted" %}
+
+                            <span class="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold">
+                                {{ application.status }}
+                            </span>
+
+                        {% elif application.status == "Interview" %}
+
+                            <span class="px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg text-xs font-bold">
+                                {{ application.status }}
+                            </span>
+
+                        {% elif application.status == "Selected" %}
+
+                            <span class="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold">
+                                {{ application.status }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold">
+                                {{ application.status }}
+                            </span>
+
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div class="p-8 text-center">
+                        <div class="text-4xl mb-3">
+                            📄
+                        </div>
+                        <p class="text-sm font-bold text-slate-600">
+                            No applications yet
+                        </p>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Start applying for jobs to see your applications here.
+                        </p>
+                        <a href="{% url 'jobs' %}"
+                        class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold">
+                            Find Jobs
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <h2 class="text-lg font-extrabold">Quick Actions</h2>
+            <p class="text-xs text-slate-400 mt-1">Manage your job search</p>
+
+            <div class="grid grid-cols-2 gap-3 mt-5">
+
+                <a href="{% url 'jobs' %}" class="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl text-center">
+                    <div>💼</div>
+                    <p class="text-xs font-bold text-blue-600 mt-2">Find Jobs</p>
+                </a>
+
+                <a href="{% url 'applications' %}" class="p-4 bg-orange-50 hover:bg-orange-100 rounded-xl text-center">
+                    <div>📄</div>
+                    <p class="text-xs font-bold text-orange-600 mt-2">Applications</p>
+                </a>
+
+                <a href="{% url 'resume' %}" class="p-4 bg-green-50 hover:bg-green-100 rounded-xl text-center">
+                    <div>📑</div>
+                    <p class="text-xs font-bold text-green-600 mt-2">My Resume</p>
+                </a>
+
+                <a href="{% url 'profile' %}" class="p-4 bg-purple-50 hover:bg-purple-100 rounded-xl text-center">
+                    <div>👤</div>
+                    <p class="text-xs font-bold text-purple-600 mt-2">Profile</p>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock contain %}

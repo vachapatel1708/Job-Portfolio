@@ -1,0 +1,633 @@
+{% extends "frontend/hr/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Edit Job
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-1">
+                Update your job posting details
+            </p>
+        </div>
+
+        <a href="{% url 'manage_jobs' %}"
+           class="px-5 py-3 border border-slate-200 bg-white
+                  text-slate-600 rounded-xl text-sm font-bold
+                  hover:bg-slate-50">
+
+            ← Back to Jobs
+
+        </a>
+
+    </div>
+
+
+    <!-- EDIT JOB FORM -->
+    <form method="POST" action="{% url 'edit_job' job.id %}" class="space-y-6">
+
+        {% csrf_token %}
+
+
+        <!-- ================= JOB INFORMATION ================= -->
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <h2 class="text-lg font-extrabold text-slate-900">
+                Job Information
+            </h2>
+
+            <p class="text-xs text-slate-400 mt-1">
+                Update basic information about the job
+            </p>
+
+
+            <div class="grid md:grid-cols-2 gap-5 mt-6">
+
+
+                <!-- JOB TITLE -->
+                <div class="md:col-span-2">
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Job Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ job.title }}"
+                        required
+                        class="w-full mt-2 px-4 py-3
+                               border border-slate-200 rounded-xl
+                               outline-none
+                               focus:border-blue-500"
+                    >
+
+                </div>
+
+
+                <!-- JOB CATEGORY -->
+                <div>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Job Category
+                    </label>
+
+                    <select name="category" required class="w-full mt-2 px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
+
+                        <option value="">Select Category</option>
+
+                        {% for category in categories %}
+
+                            <option
+                                value="{{ category.id }}"
+                                {% if job.category_id == category.id %}selected{% endif %}
+                            >
+                                {{ category.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- JOB TYPE -->
+                <div>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Job Type
+                    </label>
+
+                    <select
+                        name="job_type"
+                        required
+                        class="w-full mt-2 px-4 py-3
+                               border border-slate-200 rounded-xl
+                               outline-none
+                               focus:border-blue-500"
+                    >
+
+                        <option value="Full Time"
+                            {% if job.job_type == "Full Time" %}selected{% endif %}>
+                            Full Time
+                        </option>
+
+                        <option value="Part Time"
+                            {% if job.job_type == "Part Time" %}selected{% endif %}>
+                            Part Time
+                        </option>
+
+                        <option value="Internship"
+                            {% if job.job_type == "Internship" %}selected{% endif %}>
+                            Internship
+                        </option>
+
+                        <option value="Contract"
+                            {% if job.job_type == "Contract" %}selected{% endif %}>
+                            Contract
+                        </option>
+
+                        <option value="Freelance"
+                            {% if job.job_type == "Freelance" %}selected{% endif %}>
+                            Freelance
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- EXPERIENCE -->
+                <div>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Experience Level
+                    </label>
+
+                    <select
+                        name="experience"
+                        required
+                        class="w-full mt-2 px-4 py-3
+                               border border-slate-200 rounded-xl
+                               outline-none
+                               focus:border-blue-500"
+                    >
+
+                        <option value="Fresher"
+                            {% if job.experience == "Fresher" %}selected{% endif %}>
+                            Fresher
+                        </option>
+
+                        <option value="1 - 3 Years"
+                            {% if job.experience == "1 - 3 Years" %}selected{% endif %}>
+                            1 - 3 Years
+                        </option>
+
+                        <option value="3 - 5 Years"
+                            {% if job.experience == "3 - 5 Years" %}selected{% endif %}>
+                            3 - 5 Years
+                        </option>
+
+                        <option value="5+ Years"
+                            {% if job.experience == "5+ Years" %}selected{% endif %}>
+                            5+ Years
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- OPENINGS -->
+                <div>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Number of Openings
+                    </label>
+
+                    <input
+                        type="number"
+                        name="vacancies"
+                        value="{{ job.vacancies }}"
+                        min="1"
+                        required
+                        class="w-full mt-2 px-4 py-3
+                               border border-slate-200 rounded-xl
+                               outline-none
+                               focus:border-blue-500"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= JOB DESCRIPTION ================= -->
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <h2 class="text-lg font-extrabold text-slate-900">
+                Job Description
+            </h2>
+
+
+            <!-- DESCRIPTION -->
+            <div class="mt-6">
+
+                <label class="text-sm font-semibold text-slate-700">
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    rows="6"
+                    required
+                    class="w-full mt-2 px-4 py-3
+                           border border-slate-200 rounded-xl
+                           outline-none
+                           focus:border-blue-500"
+                >{{ job.description }}</textarea>
+
+            </div>
+
+
+            <!-- REQUIREMENTS -->
+            <div class="mt-5">
+
+                <label class="text-sm font-semibold text-slate-700">
+                    Requirements
+                </label>
+
+                <textarea
+                    name="requirements"
+                    rows="5"
+                    class="w-full mt-2 px-4 py-3
+                           border border-slate-200 rounded-xl
+                           outline-none
+                           focus:border-blue-500"
+                >{{ job.requirements }}</textarea>
+
+            </div>
+
+
+            <!-- RESPONSIBILITIES -->
+            <div class="mt-5">
+
+                <label class="text-sm font-semibold text-slate-700">
+                    Responsibilities
+                </label>
+
+                <textarea
+                    name="responsibilities"
+                    rows="6"
+                    class="w-full mt-2 px-4 py-3
+                           border border-slate-200 rounded-xl
+                           outline-none
+                           focus:border-blue-500"
+                >{{ job.responsibilities }}</textarea>
+
+            </div>
+
+
+            <!-- REQUIRED SKILLS -->
+            <div class="mt-5">
+
+                <label class="text-sm font-semibold text-slate-700">
+                    Required Skills
+                </label>
+
+                <p class="text-xs text-slate-400 mt-1">
+                    Select all skills required for this job
+                </p>
+
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-4">
+
+                    {% for skill in skills %}
+
+                    <label
+                        class="flex items-center gap-2
+                            border border-slate-200
+                            rounded-xl px-4 py-3
+                            cursor-pointer
+                            hover:bg-slate-50"
+                    >
+
+                        <input
+                            type="checkbox"
+                            name="skills"
+                            value="{{ skill.id }}"
+                            {% if skill in job.skills.all %}checked{% endif %}
+                            class="rounded"
+                        >
+
+                        <span class="text-sm font-medium text-slate-700">
+                            {{ skill.name }}
+                        </span>
+
+                    </label>
+
+                    {% empty %}
+
+                    <p class="text-sm text-slate-400">
+                        No skills available.
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= SALARY & LOCATION ================= -->
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <h2 class="text-lg font-extrabold text-slate-900">
+                Salary & Location
+            </h2>
+
+
+            <div class="grid md:grid-cols-2 gap-5 mt-6">
+
+
+                <!-- MINIMUM SALARY -->
+                <div>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Minimum Salary
+                    </label>
+
+                    <input
+                        type="number"
+                        name="salary_min"
+                        value="{{ job.salary_min }}"
+                        class="w-full mt-2 px-4 py-3
+                               border border-slate-200 rounded-xl
+                               outline-none
+                               focus:border-blue-500"
+                    >
+
+                </div>
+
+
+                <!-- MAXIMUM SALARY -->
+                <div>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Maximum Salary
+                    </label>
+
+                    <input
+                        type="number"
+                        name="salary_max"
+                        value="{{ job.salary_max }}"
+                        class="w-full mt-2 px-4 py-3
+                               border border-slate-200 rounded-xl
+                               outline-none
+                               focus:border-blue-500"
+                    >
+
+                </div>
+
+
+                <!-- LOCATION -->
+                <div class="md:col-span-2">
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        value="{{ job.location }}"
+                        placeholder="Ahmedabad, Gujarat"
+                        class="w-full mt-2 px-4 py-3
+                               border border-slate-200 rounded-xl
+                               outline-none
+                               focus:border-blue-500"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- WORK MODE -->
+            <div class="mt-6">
+
+                <label class="text-sm font-semibold text-slate-700">
+                    Work Mode
+                </label>
+
+                <div class="grid sm:grid-cols-3 gap-3 mt-3">
+
+                    <!-- ONSITE -->
+                    <label class="flex items-center gap-2
+                                border border-slate-200
+                                rounded-xl px-4 py-3
+                                cursor-pointer hover:bg-slate-50">
+
+                        <input
+                            type="radio"
+                            name="work_mode"
+                            value="Onsite"
+                            {% if job.work_mode == "Onsite" %}checked{% endif %}
+                        >
+
+                        <span class="text-sm font-medium">
+                            On-site
+                        </span>
+
+                    </label>
+
+
+                    <!-- REMOTE -->
+                    <label class="flex items-center gap-2
+                                border border-slate-200
+                                rounded-xl px-4 py-3
+                                cursor-pointer hover:bg-slate-50">
+
+                        <input
+                            type="radio"
+                            name="work_mode"
+                            value="Remote"
+                            {% if job.work_mode == "Remote" %}checked{% endif %}
+                        >
+
+                        <span class="text-sm font-medium">
+                            Remote
+                        </span>
+
+                    </label>
+
+
+                    <!-- HYBRID -->
+                    <label class="flex items-center gap-2
+                                border border-slate-200
+                                rounded-xl px-4 py-3
+                                cursor-pointer hover:bg-slate-50">
+
+                        <input
+                            type="radio"
+                            name="work_mode"
+                            value="Hybrid"
+                            {% if job.work_mode == "Hybrid" %}checked{% endif %}
+                        >
+
+                        <span class="text-sm font-medium">
+                            Hybrid
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= APPLICATION DETAILS ================= -->
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <h2 class="text-lg font-extrabold text-slate-900">
+                Application Details
+            </h2>
+
+
+            <div class="grid md:grid-cols-2 gap-5 mt-6">
+                <!-- DEADLINE -->
+                <div>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Application Deadline
+                    </label>
+
+                    <input
+                        type="date"
+                        name="application_deadline"
+                        value="{{ job.application_deadline|date:'Y-m-d' }}"
+                        required
+                        class="w-full mt-2 px-4 py-3
+                            border border-slate-200 rounded-xl
+                            outline-none
+                            focus:border-blue-500"
+                    >
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= STATUS ================= -->
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <h2 class="text-lg font-extrabold text-slate-900">
+                Job Status
+            </h2>
+
+            <p class="text-xs text-slate-400 mt-1">
+                Change the current status of this job posting.
+            </p>
+
+
+            <div class="grid sm:grid-cols-3 gap-3 mt-5">
+
+
+                <!-- ACTIVE -->
+                <label class="flex items-center gap-2
+                              border border-slate-200
+                              rounded-xl px-4 py-3
+                              cursor-pointer hover:bg-slate-50">
+
+                    <input
+                        type="radio"
+                        name="status"
+                        value="Active"
+                        {% if job.status == "Active" %}checked{% endif %}
+                    >
+
+                    <span class="text-sm font-semibold text-green-600">
+                        Active
+                    </span>
+
+                </label>
+
+
+                <!-- CLOSED -->
+                <label class="flex items-center gap-2
+                              border border-slate-200
+                              rounded-xl px-4 py-3
+                              cursor-pointer hover:bg-slate-50">
+
+                    <input
+                        type="radio"
+                        name="status"
+                        value="Closed"
+                        {% if job.status == "Closed" %}checked{% endif %}
+                    >
+
+                    <span class="text-sm font-semibold text-red-500">
+                        Closed
+                    </span>
+
+                </label>
+
+
+                <!-- DRAFT -->
+                <label class="flex items-center gap-2
+                              border border-slate-200
+                              rounded-xl px-4 py-3
+                              cursor-pointer hover:bg-slate-50">
+
+                    <input
+                        type="radio"
+                        name="status"
+                        value="Draft"
+                        {% if job.status == "Draft" %}checked{% endif %}
+                    >
+
+                    <span class="text-sm font-semibold text-orange-500">
+                        Draft
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= BUTTONS ================= -->
+
+        <div class="flex flex-col sm:flex-row justify-end gap-3">
+
+            <a
+                href="{% url 'hr_job_detail' job.id %}"
+                class="px-6 py-3 border border-slate-200
+                       bg-white text-slate-600
+                       rounded-xl text-sm font-bold
+                       text-center hover:bg-slate-50"
+            >
+                Cancel
+            </a>
+
+
+            <button
+                type="submit"
+                class="px-6 py-3 bg-blue-600
+                       hover:bg-blue-700 text-white
+                       rounded-xl text-sm font-bold"
+            >
+                Update Job
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

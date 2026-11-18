@@ -1,0 +1,345 @@
+{% extends "frontend/hr/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Manage Jobs
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-1">
+                View and manage all your job postings
+            </p>
+        </div>
+
+        <a href="{% url 'post_job' %}"
+           class="px-5 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-bold">
+
+            + Post New Job
+
+        </a>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+        <!-- TOTAL JOBS -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Total Jobs
+            </p>
+
+            <p class="text-2xl font-extrabold text-slate-900 mt-2">
+                {{ total_jobs }}
+            </p>
+
+        </div>
+
+
+        <!-- ACTIVE JOBS -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Active Jobs
+            </p>
+
+            <p class="text-2xl font-extrabold text-blue-600 mt-2">
+                {{ active_jobs }}
+            </p>
+
+        </div>
+
+
+        <!-- CLOSED JOBS -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Closed Jobs
+            </p>
+
+            <p class="text-2xl font-extrabold text-red-500 mt-2">
+                {{ closed_jobs }}
+            </p>
+
+        </div>
+
+
+        <!-- DRAFT JOBS -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Drafts
+            </p>
+
+            <p class="text-2xl font-extrabold text-orange-500 mt-2">
+                {{ draft_jobs }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- JOB LIST -->
+    <div class="bg-white border border-slate-200 rounded-2xl">
+
+
+        <!-- SEARCH / FILTER UI -->
+        <div class="p-5 border-b border-slate-100">
+
+            <div class="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+
+                <div class="relative w-full lg:w-80">
+
+                    <form method="GET" action="{% url 'manage_jobs' %}">
+
+                        <input type="text" name="search" value="{{ search }}" placeholder="Search jobs..." class="w-full px-4 py-3 pl-10 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm">
+
+                        <span class="absolute left-4 top-3 text-slate-400">
+                            ⌕
+                        </span>
+
+                    </form>
+
+                </div>
+
+
+                <div class="flex gap-3">
+
+                    <select
+                        class="px-4 py-3 border border-slate-200 rounded-xl outline-none text-sm text-slate-600">
+
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>Closed</option>
+                        <option>Draft</option>
+
+                    </select>
+
+
+                    <select
+                        class="px-4 py-3 border border-slate-200 rounded-xl outline-none text-sm text-slate-600">
+
+                        <option>All Types</option>
+                        <option>Full Time</option>
+                        <option>Part Time</option>
+                        <option>Internship</option>
+                        <option>Contract</option>
+                        <option>Freelance</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DYNAMIC JOBS -->
+        <div class="divide-y divide-slate-100">
+
+
+            {% for job in jobs %}
+
+            <div class="p-5 hover:bg-slate-50">
+
+                <div class="flex flex-col lg:flex-row lg:items-center gap-5">
+
+
+                    <!-- JOB ICON -->
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+
+                        💼
+
+                    </div>
+
+
+                    <!-- JOB INFORMATION -->
+                    <div class="flex-1">
+
+                        <div class="flex flex-wrap items-center gap-2">
+
+                            <h3 class="text-sm font-extrabold text-slate-900">
+                                {{ job.title }}
+                            </h3>
+
+
+                            {% if job.status == "Active" %}
+
+                                <span class="px-2.5 py-1 bg-green-50 text-green-600 rounded-lg text-[10px] font-bold">
+                                    Active
+                                </span>
+
+                            {% elif job.status == "Closed" %}
+
+                                <span class="px-2.5 py-1 bg-red-50 text-red-600 rounded-lg text-[10px] font-bold">
+                                    Closed
+                                </span>
+
+                            {% elif job.status == "Draft" %}
+
+                                <span class="px-2.5 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-bold">
+                                    Draft
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- JOB BASIC DETAILS -->
+
+                        <p class="text-xs text-slate-400 mt-1">
+
+                            {{ job.job_type }}
+
+                            •
+                            
+                            {{ job.work_mode }}
+
+                            •
+
+                            {{ job.location }}
+
+                            •
+
+                            {{ job.experience }}
+
+                        </p>
+
+
+                        <!-- SKILLS -->
+
+                        <div class="flex flex-wrap gap-2 mt-3">
+
+                            {% for skill in job.skills.all %}
+
+                                <span class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px]">
+
+                                    {{ skill.name }}
+
+                                </span>
+
+                            {% empty %}
+
+                                <span class="text-xs text-slate-400">
+                                    No skills added
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- APPLICATION COUNT -->
+
+                    <div class="text-left lg:text-center">
+
+                        <p class="text-lg font-extrabold text-slate-900">
+
+                            {{ job.applications.count }}
+
+                        </p>
+
+                        <p class="text-xs text-slate-400">
+                            Applications
+                        </p>
+
+                    </div>
+
+
+                    <!-- ACTION BUTTONS -->
+
+                    <div class="flex gap-2">
+
+
+                        <a
+                            href="{% url 'hr_job_detail' job.id %}"
+                            class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">
+
+                            View
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'edit_job' job.id %}"
+                            class="px-3 py-2 bg-orange-50 text-orange-600 rounded-lg text-xs font-bold">
+
+                            Edit
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% empty %}
+
+            <!-- NO JOBS -->
+
+            <div class="p-10 text-center">
+
+                <div class="text-4xl mb-3">
+                    💼
+                </div>
+
+                <h3 class="text-lg font-extrabold text-slate-900">
+                    No Jobs Found
+                </h3>
+
+                <p class="text-sm text-slate-400 mt-1">
+                    You have not posted any jobs yet.
+                </p>
+
+                <a
+                    href="{% url 'post_job' %}"
+                    class="inline-block mt-5 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold">
+
+                    + Post Your First Job
+
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+
+        <!-- PAGINATION INFORMATION -->
+
+        <div class="flex items-center justify-between p-5 border-t border-slate-100">
+
+            <p class="text-xs text-slate-400">
+
+                Showing
+                {{ jobs|length }}
+                job{{ jobs|length|pluralize }}
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

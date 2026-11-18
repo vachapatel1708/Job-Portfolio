@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="fixed left-0 top-0 w-64 h-screen bg-white border-r border-slate-200 hidden lg:block">
+
+        <!-- LOGO -->
+        <div class="h-20 flex items-center px-6 border-b border-slate-100">
+
+            <a href="/" class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold">
+                J
+            </a>
+
+            <div class="ml-3">
+                <h1 class="text-xl font-extrabold text-slate-900">
+                    JobPortal
+                </h1>
+
+                <p class="text-[10px] text-slate-400">
+                    {{ user.get_full_name|default:user.username }}
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR MENU -->
+        <div class="p-3">
+
+            <!-- MAIN MENU -->
+            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase mb-2">
+                Main Menu
+            </p>
+
+            <div class="space-y-1">
+
+                <!-- Home -->
+                <a href="/"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>🏠</span>
+                    <span>Home</span>
+
+                </a>
+
+
+                <!-- Dashboard -->
+                <a href="/jobseeker_dashboard"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          bg-blue-50 text-blue-600 font-semibold">
+
+                    <span>▣</span>
+                    <span>Dashboard</span>
+
+                </a>
+
+
+                <!-- My Profile -->
+                <a href="{% url 'profile' %}"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>👤</span>
+                    <span>My Profile</span>
+
+                </a>
+
+
+                <!-- Edit Profile -->
+                <a href="{% url 'edit_profile' %}"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>✎</span>
+                    <span>Edit Profile</span>
+
+                </a>
+
+
+                <!-- Resume -->
+                <a href="/resume"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>📄</span>
+                    <span>My Resume</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- JOBS -->
+            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase mb-2 mt-4">
+                Jobs
+            </p>
+
+            <div class="space-y-1">
+
+                <!-- Find Jobs -->
+                <a href="/jobs"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>💼</span>
+                    <span>Find Jobs</span>
+
+                </a>
+
+
+                <!-- Saved Jobs -->
+                <a href="/saved_jobs"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>🔖</span>
+                    <span>Saved Jobs</span>
+
+                </a>
+
+
+                <!-- My Applications -->
+                <a href="/applications"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>📄</span>
+                    <span>My Applications</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase mb-2 mt-4">
+                Account
+            </p>
+
+            <div class="space-y-1">
+
+                <!-- Notifications -->
+                <a href="/notifications"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-blue-50
+                          hover:text-blue-600 font-semibold">
+
+                    <span>🔔</span>
+                    <span>Notifications</span>
+
+                </a>
+
+
+                <!-- Logout -->
+                <a href="{% url 'logout' %}"
+                   class="flex items-center gap-3 px-3 py-2 rounded-xl
+                          text-slate-600 hover:bg-red-50
+                          hover:text-red-600 font-semibold">
+
+                    <span>↪</span>
+                    <span>Logout</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="lg:ml-64 min-h-screen">
+
+        <!-- TOP NAVBAR -->
+        <nav class="h-20 bg-white border-b border-slate-200
+                    flex items-center justify-between
+                    px-6 lg:px-8 sticky top-0 z-40">
+
+            <!-- TITLE -->
+            <div>
+
+                <h2 class="text-lg font-bold text-slate-900">
+                    Job Seeker Dashboard
+                </h2>
+
+                <p class="text-xs text-slate-400">
+                    Find your next career opportunity
+                </p>
+
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+            <div class="flex items-center gap-4">
+
+                <!-- Notifications -->
+                <a href="/notifications"
+                   class="relative w-10 h-10 rounded-xl
+                          bg-blue-50 text-blue-600
+                          flex items-center justify-center">
+
+                    🔔
+
+                    <span class="absolute -top-1 -right-1
+                                 w-4 h-4 bg-orange-500
+                                 text-white text-[9px]
+                                 rounded-full flex items-center
+                                 justify-center font-bold">
+
+                        3
+
+                    </span>
+
+                </a>
+
+
+                <!-- USER -->
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10 bg-blue-100 rounded-full
+                                flex items-center justify-center
+                                text-blue-600 font-bold">
+
+                        {{ user.first_name|first }}{{ user.last_name|first }}
+
+                    </div>
+
+
+                    <div class="hidden md:block">
+
+                        <p class="text-sm font-bold">
+                            {{ user.get_full_name|default:user.username }}
+                        </p>
+
+                        <p class="text-xs text-slate-400">
+                            Candidate
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+        <!-- PAGE CONTENT -->
+
+        {% block contain %}
+
+        {% endblock %}
+
+
+
+        <!-- FOOTER -->
+
+        <footer class="border-t border-slate-200 bg-white
+                       px-6 lg:px-8 py-5">
+
+            <div class="flex flex-col md:flex-row
+                        items-center justify-between gap-3">
+
+                <p class="text-xs text-slate-400">
+                    © 2026 JobPortal. All rights reserved.
+                </p>
+
+                <p class="text-xs text-slate-400">
+                    Job Seeker Portal
+                </p>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+</body>
+</html>

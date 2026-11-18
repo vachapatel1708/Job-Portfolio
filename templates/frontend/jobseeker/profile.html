@@ -1,0 +1,201 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">My Profile</h1>
+            <p class="text-sm text-slate-400 mt-1">Manage your professional information and profile.</p>
+        </div>
+
+        <a href="{% url 'edit_profile' %}" class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm">
+            ✎ Edit Profile
+        </a>
+    </div>
+
+    <div class="grid xl:grid-cols-3 gap-6">
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+            <div class="flex flex-col items-center text-center">
+                {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="w-24 h-24 rounded-full object-cover border-4 border-blue-100" >
+                {% else %}
+                    <div class="w-24 h-24 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl font-extrabold">
+                        {{ user.first_name|first }}{{ user.last_name|first }}
+                    </div>
+                {% endif %}
+
+                <h2 class="text-xl font-extrabold mt-4">
+                    {{ user.get_full_name|default:user.username }}
+                </h2>
+                <p class="text-sm text-slate-400 mt-1">
+                    {{ profile.experience|default:"Job Seeker" }}
+                </p>
+
+                <div class="flex items-center gap-2 mt-4">
+                    <span class="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold">
+                        Available for Jobs
+                    </span>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-100 mt-6 pt-5 space-y-4">
+
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+                        ✉
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-400">Email</p>
+                        <p class="text-sm font-semibold"> {{ user.email }} </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center">
+                        ☎
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-400">Phone</p>
+                        <p class="text-sm font-semibold">
+                            {{ profile.phone|default:"Not added" }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-green-50 text-green-600 rounded-lg flex items-center justify-center">
+                        📍
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-400">Location</p>
+                        <p class="text-sm font-semibold">
+                            {% if profile.city or profile.state %}
+                                {{ profile.city }}{% if profile.city and profile.state %}, {% endif %}{{ profile.state }}
+                            {% else %}
+                                Not added
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="xl:col-span-2 space-y-6">
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h2 class="text-lg font-extrabold">About Me</h2>
+                        <p class="text-xs text-slate-400 mt-1">Professional summary</p>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-600 leading-7">
+                    {{ profile.about|default:"No professional summary added yet." }}
+                </p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h2 class="text-lg font-extrabold">Skills</h2>
+                        <p class="text-xs text-slate-400 mt-1">Technical skills and expertise</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    {% if profile.skills %}
+                        <span class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-bold">
+                            {{ profile.skills }}
+                        </span>
+                    {% else %}
+                        <p class="text-sm text-slate-400">
+                            No skills added yet.
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h2 class="text-lg font-extrabold">Education</h2>
+                        <p class="text-xs text-slate-400 mt-1">Academic background</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                        🎓
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-extrabold">
+                            {{ profile.education|default:"Education not added" }}
+                        </h3>
+
+                        <p class="text-sm text-slate-500 mt-1">
+                            Information Technology
+                        </p>
+                        <p class="text-xs text-slate-400 mt-1">2023 - 2027</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mt-6">
+
+        <a href="{% url 'applications' %}" class="block bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-300 hover:shadow-sm transition">
+            <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                💼
+            </div>
+            <p class="text-2xl font-extrabold mt-4">
+                {{ applied_jobs_count }}
+            </p>
+            <p class="text-xs text-slate-400">
+                Jobs Applied
+            </p>
+        </a>
+
+        <a href="{% url 'saved_jobs' %}" class="block bg-white border border-slate-200 rounded-2xl p-5 hover:border-orange-300 hover:shadow-sm transition">
+            <div class="w-11 h-11 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                🔖
+            </div>
+            <p class="text-2xl font-extrabold mt-4">
+                {{ saved_jobs_count }}
+            </p>
+            <p class="text-xs text-slate-400">
+                Saved Jobs
+            </p>
+        </a>
+
+        <a href="{% url 'resume' %}" class="block bg-white border border-slate-200 rounded-2xl p-5 hover:border-green-300 hover:shadow-sm transition">
+            <div class="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+                📄
+            </div>
+            <p class="text-2xl font-extrabold mt-4">
+                {% if profile.resume %}
+                    1
+                {% else %}
+                    0
+                {% endif %}
+            </p>
+            <p class="text-xs text-slate-400">
+                Resume Uploaded
+            </p>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock contain %}

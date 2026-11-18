@@ -1,0 +1,241 @@
+{% extends "frontend/hr/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- ================= HEADER ================= -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Selected Candidates
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-1">
+                Manage candidates selected for the job
+            </p>
+        </div>
+
+        <a href="{% url 'hr_applications' %}"
+           class="px-5 py-3 border border-slate-200 bg-white text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50">
+            All Applications
+        </a>
+
+    </div>
+
+
+    <!-- ================= STATS ================= -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+        <!-- Total Selected -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Total Selected
+            </p>
+
+            <p class="text-2xl font-extrabold text-green-600 mt-2">
+                {{ applications|length }}
+            </p>
+
+        </div>
+
+
+        <!-- Current Status -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+
+            <p class="text-xs text-slate-400">
+                Current Status
+            </p>
+
+            <p class="text-2xl font-extrabold text-blue-600 mt-2">
+                Selected
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SELECTED CANDIDATES ================= -->
+    <div class="bg-white border border-slate-200 rounded-2xl">
+
+
+        {% if applications %}
+
+            <div class="divide-y divide-slate-100">
+
+                {% for application in applications %}
+
+                <!-- Candidate -->
+                <div class="p-5 hover:bg-slate-50">
+
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-5">
+
+
+                        <!-- ================= AVATAR ================= -->
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-extrabold uppercase flex-shrink-0">
+
+                            {% if application.job_seeker.first_name %}
+                                {{ application.job_seeker.first_name|first }}
+                            {% else %}
+                                {{ application.job_seeker.username|first }}
+                            {% endif %}
+
+                            {% if application.job_seeker.last_name %}
+                                {{ application.job_seeker.last_name|first }}
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- ================= CANDIDATE DETAILS ================= -->
+                        <div class="flex-1 min-w-0">
+
+                            <h3 class="text-sm font-extrabold text-slate-900">
+
+                                {% if application.job_seeker.get_full_name %}
+                                    {{ application.job_seeker.get_full_name }}
+                                {% else %}
+                                    {{ application.job_seeker.username }}
+                                {% endif %}
+
+                            </h3>
+
+
+                            <!-- Job + Selected Date -->
+                            <p class="text-xs text-slate-400 mt-1">
+
+                                {{ application.job.title }}
+
+                                • Selected
+                                {{ application.updated_at|date:"d M Y" }}
+
+                            </p>
+
+
+                            <!-- Skills -->
+                            {% if application.job_seeker.jobseekerprofile.skills %}
+
+                                <p class="text-xs text-slate-500 mt-3">
+
+                                    <span class="font-semibold">
+                                        Skills:
+                                    </span>
+
+                                    {{ application.job_seeker.jobseekerprofile.skills }}
+
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- ================= STATUS ================= -->
+                        <div class="text-left lg:text-center min-w-[100px]">
+
+                            <p class="text-sm font-bold text-green-600">
+                                Selected
+                            </p>
+
+                            <p class="text-xs text-slate-400 mt-1">
+
+                                {{ application.updated_at|date:"d M Y" }}
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- ================= VIEW BUTTON ================= -->
+                        <div>
+
+                            <a href="{% url 'hr_application_detail' application.id %}"
+                               class="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-100">
+
+                                View
+
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- ================= FOOTER ================= -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-5 border-t border-slate-100">
+
+                <p class="text-xs text-slate-400">
+
+                    Showing
+                    {{ applications|length }}
+                    selected candidate{{ applications|length|pluralize }}
+
+                </p>
+
+
+                <a href="{% url 'hr_applications' %}"
+                   class="text-xs font-bold text-blue-600 hover:text-blue-700">
+
+                    View All Applications →
+
+                </a>
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- ================= EMPTY STATE ================= -->
+            <div class="p-12 text-center">
+
+
+                <!-- Icon -->
+                <div class="w-16 h-16 mx-auto bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl font-bold">
+
+                    ✓
+
+                </div>
+
+
+                <h3 class="text-lg font-bold text-slate-800 mt-4">
+
+                    No Selected Candidates
+
+                </h3>
+
+
+                <p class="text-sm text-slate-400 mt-2">
+
+                    Candidates selected by HR will appear here.
+
+                </p>
+
+
+                <a href="{% url 'hr_applications' %}"
+                   class="inline-block mt-5 px-5 py-3 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700">
+
+                    View Applications
+
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

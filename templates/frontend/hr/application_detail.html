@@ -1,0 +1,539 @@
+{% extends "frontend/hr/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Application Details
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-1">
+                Review candidate application and resume
+            </p>
+        </div>
+
+        <a href="{% url 'hr_applications' %}"
+           class="px-5 py-3 border border-slate-200 bg-white text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50">
+
+            ← Back to Applications
+
+        </a>
+
+    </div>
+
+
+    <div class="grid lg:grid-cols-3 gap-6">
+
+
+        <!-- LEFT SIDE -->
+        <div class="lg:col-span-2 space-y-6">
+
+
+            <!-- Candidate Information -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+
+
+                    <!-- Profile Image / Initial -->
+                    <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl font-extrabold">
+
+                        {{ application.job_seeker.first_name|first|upper }}{{ application.job_seeker.last_name|first|upper }}
+
+                    </div>
+
+
+                    <div class="flex-1">
+
+                        <h2 class="text-xl font-extrabold text-slate-900">
+
+                            {{ application.job_seeker.get_full_name|default:application.job_seeker.username }}
+
+                        </h2>
+
+                        <p class="text-sm text-slate-500 mt-1">
+
+                            {{ application.job.title }}
+
+                        </p>
+
+                        <p class="text-xs text-slate-400 mt-2">
+
+                            Applied on {{ application.applied_date|date:"d M Y, h:i A" }}
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- Status -->
+                    {% if application.status == "Applied" %}
+
+                        <span class="px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-xs font-bold">
+                            Applied
+                        </span>
+
+                    {% elif application.status == "Under Review" %}
+
+                        <span class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">
+                            Under Review
+                        </span>
+
+                    {% elif application.status == "Shortlisted" %}
+
+                        <span class="px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg text-xs font-bold">
+                            Shortlisted
+                        </span>
+
+                    {% elif application.status == "Interview" %}
+
+                        <span class="px-3 py-1.5 bg-yellow-50 text-yellow-600 rounded-lg text-xs font-bold">
+                            Interview
+                        </span>
+
+                    {% elif application.status == "Selected" %}
+
+                        <span class="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold">
+                            Selected
+                        </span>
+
+                    {% elif application.status == "Rejected" %}
+
+                        <span class="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold">
+                            Rejected
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Contact Information -->
+                <div class="grid sm:grid-cols-2 gap-5 mt-7 pt-6 border-t border-slate-100">
+
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Username
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+                            {{ application.job_seeker.username }}
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Full Name
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+                            {{ application.job_seeker.first_name|default:"Not provided" }}
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Email
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+                            {{ application.job_seeker.email|default:"Not provided" }}
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Resume -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+
+                <div class="flex items-center justify-between gap-3">
+
+                    <div>
+
+                        <h2 class="text-lg font-extrabold text-slate-900">
+                            Resume
+                        </h2>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            Candidate's submitted resume
+                        </p>
+
+                    </div>
+
+
+                    {% if application.resume %}
+
+                    <a href="{{ application.resume.url }}"
+                       target="_blank"
+                       class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-100">
+
+                        View Resume
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <div class="flex items-center gap-4 mt-5 p-4 bg-slate-50 rounded-xl">
+
+
+                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-xl flex items-center justify-center text-xl">
+
+                        📄
+
+                    </div>
+
+
+                    <div class="flex-1">
+
+                        {% if application.resume %}
+
+                            <p class="text-sm font-bold text-slate-800">
+
+                                {{ application.resume.name|cut:"applications/resumes/" }}
+
+                            </p>
+
+                            <p class="text-xs text-slate-400 mt-1">
+                                Submitted Resume
+                            </p>
+
+                        {% else %}
+
+                            <p class="text-sm font-bold text-slate-800">
+                                No Resume Uploaded
+                            </p>
+
+                            <p class="text-xs text-slate-400 mt-1">
+                                Candidate did not upload a resume
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if application.resume %}
+
+                    <a href="{{ application.resume.url }}"
+                       download
+                       class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50">
+
+                        Download
+
+                    </a>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Skills -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Skills
+                </h2>
+                <div class="flex flex-wrap gap-3 mt-5">
+
+                    {% if candidate_skills %}
+
+                        {% for skill in candidate_skills %}
+
+                            <span class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-semibold">
+                                {{ skill }}
+                            </span>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="text-sm text-slate-400">
+                            No skills information available.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+
+
+            <!-- Cover Letter -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Cover Letter
+                </h2>
+
+
+                {% if application.cover_letter %}
+
+                    <p class="text-sm text-slate-500 leading-7 mt-5 whitespace-pre-line">
+                        {{ application.cover_letter }}
+                    </p>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-5">
+                        No cover letter was submitted.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- RIGHT SIDE -->
+        <div class="space-y-6">
+
+
+            <!-- Application Status -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Application Status
+                </h2>
+
+
+                <p class="text-xs text-slate-400 mt-2">
+                    Current Status:
+                    <span class="font-bold text-slate-600">
+                        {{ application.status }}
+                    </span>
+                </p>
+
+
+                <form method="POST" class="space-y-3 mt-5">
+
+                    {% csrf_token %}
+
+
+                    <!-- Under Review -->
+                    <button
+                        type="submit"
+                        name="status"
+                        value="Under Review"
+                        class="w-full px-4 py-3 bg-blue-50 text-blue-600 rounded-xl text-sm font-bold hover:bg-blue-100">
+
+                        Mark Under Review
+
+                    </button>
+
+
+                    <!-- Shortlist -->
+                    <button
+                        type="submit"
+                        name="status"
+                        value="Shortlisted"
+                        class="w-full px-4 py-3 bg-purple-50 text-purple-600 rounded-xl text-sm font-bold hover:bg-purple-100">
+
+                        Shortlist Candidate
+
+                    </button>
+
+
+                    <!-- Interview -->
+                    <button
+                        type="submit"
+                        name="status"
+                        value="Interview"
+                        class="w-full px-4 py-3 bg-yellow-50 text-yellow-600 rounded-xl text-sm font-bold hover:bg-yellow-100">
+
+                        Mark for Interview
+
+                    </button>
+
+
+                    <!-- Select -->
+                    <button
+                        type="submit"
+                        name="status"
+                        value="Selected"
+                        class="w-full px-4 py-3 bg-green-50 text-green-600 rounded-xl text-sm font-bold hover:bg-green-100">
+
+                        Select Candidate
+
+                    </button>
+
+
+                    <!-- Reject -->
+                    <button
+                        type="submit"
+                        name="status"
+                        value="Rejected"
+                        class="w-full px-4 py-3 bg-red-50 text-red-600 rounded-xl text-sm font-bold hover:bg-red-100">
+
+                        Reject Candidate
+
+                    </button>
+
+
+                </form>
+
+            </div>
+
+
+
+            <!-- Applied Job -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Applied Job
+                </h2>
+
+
+                <div class="mt-5">
+
+                    <p class="text-sm font-bold text-slate-800">
+                        {{ application.job.title }}
+                    </p>
+
+
+                    <p class="text-xs text-slate-400 mt-2">
+
+                        {{ application.job.job_type }}
+                        •
+                        {{ application.job.location }}
+
+                    </p>
+
+
+                    {% if application.job.salary_min or application.job.salary_max %}
+
+                    <p class="text-xs text-slate-400 mt-1">
+
+                        ₹{{ application.job.salary_min|default:"0" }}
+                        -
+                        ₹{{ application.job.salary_max|default:"0" }}
+
+                    </p>
+
+                    {% endif %}
+
+
+                    <a href="{% url 'hr_job_detail' application.job.id %}"
+                       class="block text-center mt-5 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold">
+
+                        View Job
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Application Information -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold text-slate-900">
+                    Application Information
+                </h2>
+
+
+                <div class="space-y-4 mt-5">
+
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Applied Date
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                            {{ application.applied_date|date:"d M Y" }}
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Last Updated
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                            {{ application.updated_at|date:"d M Y, h:i A" }}
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Job Type
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                            {{ application.job.job_type }}
+
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p class="text-xs text-slate-400">
+                            Work Mode
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                            {{ application.job.work_mode }}
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

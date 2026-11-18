@@ -1,0 +1,473 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Find Jobs
+            </h1>
+
+            <p class="text-sm text-slate-400 mt-1">
+                Discover the latest opportunities and find your next career move.
+            </p>
+        </div>
+
+        <div class="px-4 py-2.5 bg-blue-50 text-blue-600 rounded-xl text-sm font-bold">
+            {{ jobs|length }} Jobs Available
+        </div>
+
+    </div>
+
+
+    <form method="GET" action="{% url 'jobs' %}">
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-6">
+
+            <div class="grid lg:grid-cols-4 gap-4">
+
+                <!-- SEARCH -->
+                <div class="lg:col-span-2">
+
+                    <label class="block text-xs font-bold text-slate-500 mb-2">
+                        Search Jobs
+                    </label>
+
+                    <div class="relative">
+
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                            🔍
+                        </span>
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search }}"
+                            placeholder="Job title, skills or keywords"
+                            class="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOCATION -->
+                <div>
+
+                    <label class="block text-xs font-bold text-slate-500 mb-2">
+                        Location
+                    </label>
+
+                    <select
+                    name="location"
+                    onchange="this.form.submit()"
+                    class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+                        <option value="">All Locations</option>
+
+                        {% for location in locations %}
+                            <option
+                                value="{{ location }}"
+                                {% if selected_location == location %}selected{% endif %}
+                            >
+                                {{ location }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- JOB TYPE -->
+                <div>
+
+                    <label class="block text-xs font-bold text-slate-500 mb-2">
+                        Job Type
+                    </label>
+
+                    <select
+                        name="job_type"
+                        onchange="this.form.submit()"
+                        class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    >
+
+                        <option value="">All Types</option>
+
+                        <option value="Full Time"
+                            {% if selected_job_type == "Full Time" %}selected{% endif %}>
+                            Full Time
+                        </option>
+
+                        <option value="Part Time"
+                            {% if selected_job_type == "Part Time" %}selected{% endif %}>
+                            Part Time
+                        </option>
+
+                        <option value="Internship"
+                            {% if selected_job_type == "Internship" %}selected{% endif %}>
+                            Internship
+                        </option>
+
+                        <option value="Contract"
+                            {% if selected_job_type == "Contract" %}selected{% endif %}>
+                            Contract
+                        </option>
+
+                        <option value="Freelance"
+                            {% if selected_job_type == "Freelance" %}selected{% endif %}>
+                            Freelance
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- FILTER BUTTONS -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4 pt-4 border-t border-slate-100">
+
+                <div class="flex flex-wrap gap-2">
+
+                    <!-- ALL JOBS -->
+                    <button
+                        type="submit"
+                        name="filter"
+                        value="all"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold"
+                    >
+                        All Jobs
+                    </button>
+
+
+                    <!-- LATEST -->
+                    <button
+                        type="submit"
+                        name="sort"
+                        value="latest"
+                        class="px-4 py-2 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 rounded-lg text-xs font-bold"
+                    >
+                        Latest
+                    </button>
+
+
+                    <!-- RECOMMENDED -->
+                    <button
+                        type="button"
+                        class="px-4 py-2 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 rounded-lg text-xs font-bold"
+                    >
+                        Recommended
+                    </button>
+
+                </div>
+
+
+                <!-- SORT -->
+                <select
+                    name="sort"
+                    onchange="this.form.submit()"
+                    class="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none"
+                >
+
+                    <option value="latest"
+                        {% if selected_sort == "latest" %}selected{% endif %}>
+                        Sort: Latest
+                    </option>
+
+                    <option value="salary"
+                        {% if selected_sort == "salary" %}selected{% endif %}>
+                        Sort: Salary
+                    </option>
+
+                    <option value="relevance"
+                        {% if selected_sort == "relevance" %}selected{% endif %}>
+                        Sort: Relevance
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </form>
+
+
+
+    <!-- JOBS -->
+    <div class="grid xl:grid-cols-3 gap-6">
+
+        <div class="xl:col-span-2 space-y-4">
+
+            {% for job in jobs %}
+
+            <!-- JOB CARD -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <div class="flex flex-col md:flex-row md:items-start gap-4">
+
+
+                    <!-- COMPANY INITIAL -->
+                    <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl font-extrabold flex-shrink-0">
+
+                        {% if job.company.name %}
+                            {{ job.company.name|slice:":2"|upper }}
+                        {% else %}
+                            CO
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="flex-1">
+
+                        <!-- TITLE + SAVE -->
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+
+                            <div>
+
+                                <h2 class="text-base font-extrabold text-slate-900">
+                                    {{ job.title }}
+                                </h2>
+
+                                <p class="text-sm text-slate-500 mt-1">
+                                    {{ job.company.name }}
+                                </p>
+
+                                {% if job.category %}
+                                <p class="text-xs text-blue-600 font-semibold mt-1">
+                                    {{ job.category.name }}
+                                </p>
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- SAVE -->
+                            <a
+                                href="{% url 'save_job' job.id %}"
+                                class="w-10 h-10 bg-slate-50 hover:bg-blue-50 rounded-xl text-slate-400 hover:text-blue-600 flex items-center justify-center"
+                            >
+                                ♡
+                            </a>
+
+                        </div>
+
+
+                        <!-- JOB INFORMATION -->
+                        <div class="flex flex-wrap gap-3 mt-4">
+
+                            {% if job.location %}
+                            <span class="text-xs text-slate-500">
+                                📍 {{ job.location }}
+                            </span>
+                            {% endif %}
+
+
+                            {% if job.job_type %}
+                            <span class="text-xs text-slate-500">
+                                💼 {{ job.job_type }}
+                            </span>
+                            {% endif %}
+
+
+                            {% if job.work_mode %}
+                            <span class="text-xs text-slate-500">
+                                🏢 {{ job.work_mode }}
+                            </span>
+                            {% endif %}
+
+
+                            {% if job.experience %}
+                            <span class="text-xs text-slate-500">
+                                👤 {{ job.experience }}
+                            </span>
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- SALARY -->
+                        {% if job.salary_min or job.salary_max %}
+
+                        <div class="mt-4">
+
+                            <span class="text-sm font-bold text-green-600">
+                                💰
+
+                                {% if job.salary_min %}
+                                    ₹{{ job.salary_min }}
+                                {% endif %}
+
+                                {% if job.salary_min and job.salary_max %}
+                                    - 
+                                {% endif %}
+
+                                {% if job.salary_max %}
+                                    ₹{{ job.salary_max }}
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <!-- SKILLS -->
+                        {% if job.skills.all %}
+
+                        <div class="flex flex-wrap gap-2 mt-4">
+
+                            {% for skill in job.skills.all %}
+
+                                <span class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">
+                                    {{ skill.name }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <!-- DESCRIPTION -->
+                        {% if job.description %}
+
+                        <div class="mt-4">
+
+                            <p class="text-sm text-slate-600 leading-6">
+                                {{ job.description|truncatewords:30 }}
+                            </p>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <!-- JOB FOOTER -->
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 pt-4 border-t border-slate-100">
+
+
+                            <!-- POSTED -->
+                            <div>
+
+                                <p class="text-xs text-slate-400">
+                                    Posted {{ job.created_at|timesince }} ago
+                                </p>
+
+                                {% if job.application_deadline %}
+
+                                <p class="text-xs text-orange-500 mt-1 font-semibold">
+                                    Apply before {{ job.application_deadline|date:"d M Y" }}
+                                </p>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- VIEW -->
+                            <a
+                                href="{% url 'job_detail' job.id %}"
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold text-center"
+                            >
+                                View Job
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <!-- NO JOBS -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-10 text-center">
+
+                <div class="text-5xl mb-4">
+                    🔍
+                </div>
+
+                <h2 class="text-lg font-extrabold text-slate-800">
+                    No Jobs Available
+                </h2>
+
+                <p class="text-sm text-slate-400 mt-2">
+                    Currently there are no active jobs available.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 h-fit">
+
+            <h2 class="text-lg font-extrabold">
+                Job Categories
+            </h2>
+
+            <p class="text-xs text-slate-400 mt-1">
+                Explore available jobs by category
+            </p>
+
+
+            <div class="space-y-2 mt-5">
+
+                {% for category in categories %}
+
+                    <a
+                        href="{% url 'jobs' %}?category={{ category.id }}"
+                        class="flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 rounded-xl transition"
+                    >
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="w-9 h-9 bg-white rounded-lg flex items-center justify-center">
+                                💼
+                            </span>
+
+                            <span class="text-sm font-bold text-blue-600">
+                                {{ category.name }}
+                            </span>
+
+                        </div>
+
+                        <span class="text-xs font-bold text-blue-600">
+                            {{ category.job_count }}
+                        </span>
+
+                    </a>
+
+                {% empty %}
+
+                    <p class="text-sm text-slate-400 text-center py-5">
+                        No categories available.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock contain %}

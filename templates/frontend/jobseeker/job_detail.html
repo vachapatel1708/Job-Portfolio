@@ -1,0 +1,710 @@
+{% extends "frontend/jobseeker/base.html" %}
+
+{% block contain %}
+
+<div class="p-6 lg:p-8">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-400 mb-6">
+        <a href="{% url 'jobs' %}" class="hover:text-blue-600">
+            Jobs
+        </a>
+        <span>→</span>
+        <span class="text-slate-600">
+            Job Details
+        </span>
+    </div>
+
+
+    <!-- Job Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 md:p-8 text-white mb-6">
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+            <div class="flex items-center gap-5">
+
+                <!-- Company Initial -->
+                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-blue-600 text-xl font-extrabold">
+                    {{ job.company.company_name|slice:":2"|upper }}
+                </div>
+
+                <div>
+
+                    <p class="text-blue-100 text-sm font-medium">
+                        {{ job.company.company_name }}
+                    </p>
+
+                    <h1 class="text-2xl md:text-3xl font-extrabold mt-1">
+                        {{ job.title }}
+                    </h1>
+
+                    <div class="flex flex-wrap gap-4 mt-3 text-sm text-blue-100">
+
+                        <span>
+                            📍 {{ job.location }}
+                        </span>
+
+                        <span>
+                            💼 {{ job.job_type }}
+                        </span>
+
+                        <span>
+                            🏠 {{ job.work_mode }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="flex gap-3">
+
+                <a href="{% url 'save_job' job.id %}"
+                   class="px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-bold">
+
+                    {% if is_saved %}
+                        ♥
+                    {% else %}
+                        ♡
+                    {% endif %}
+
+                </a>
+
+                <a href="{% url 'apply_job' job.id %}"
+                   class="px-5 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold">
+
+                    Apply Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Main Content -->
+    <div class="grid xl:grid-cols-3 gap-6">
+
+        <!-- LEFT SIDE -->
+        <div class="xl:col-span-2 space-y-6">
+
+
+            <!-- Job Description -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    Job Description
+                </h2>
+
+                {% if job.description %}
+
+                    <p class="text-sm text-slate-600 leading-7 mt-4 whitespace-pre-line">
+                        {{ job.description }}
+                    </p>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-4">
+                        No job description provided.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- Responsibilities -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    Responsibilities
+                </h2>
+
+                {% if job.responsibilities %}
+
+                    <div class="space-y-3 mt-5">
+
+                        {% for responsibility in job.responsibilities.splitlines %}
+
+                            {% if responsibility %}
+
+                                <div class="flex gap-3">
+
+                                    <span class="text-blue-600 font-bold">
+                                        ✓
+                                    </span>
+
+                                    <p class="text-sm text-slate-600">
+                                        {{ responsibility }}
+                                    </p>
+
+                                </div>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-4">
+                        No responsibilities provided.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- Requirements -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    Requirements
+                </h2>
+
+                {% if job.requirements %}
+
+                    <div class="space-y-3 mt-5">
+
+                        {% for requirement in job.requirements.splitlines %}
+
+                            {% if requirement %}
+
+                                <div class="flex gap-3">
+
+                                    <span class="text-blue-600 font-bold">
+                                        ✓
+                                    </span>
+
+                                    <p class="text-sm text-slate-600">
+                                        {{ requirement }}
+                                    </p>
+
+                                </div>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-4">
+                        No specific requirements provided.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- Skills -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    Required Skills
+                </h2>
+
+                <div class="flex flex-wrap gap-3 mt-5">
+
+                    {% for skill in job.skills.all %}
+
+                        <span class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-bold">
+                            {{ skill.name }}
+                        </span>
+
+                    {% empty %}
+
+                        <p class="text-sm text-slate-400">
+                            No specific skills mentioned.
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Experience -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    Experience
+                </h2>
+
+                <div class="p-5 bg-orange-50 rounded-xl mt-5">
+
+                    <p class="text-xs text-orange-600 font-bold">
+                        Required Experience
+                    </p>
+
+                    <h3 class="text-sm font-extrabold mt-2">
+                        {{ job.experience }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RIGHT SIDE -->
+        <div class="space-y-6">
+
+
+            <!-- Job Overview -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    Job Overview
+                </h2>
+
+                <div class="space-y-5 mt-5">
+
+
+                    <!-- Job Type -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                            💼
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Job Type
+                            </p>
+
+                            <p class="text-sm font-bold">
+                                {{ job.job_type }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Work Mode -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
+                            🏠
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Work Mode
+                            </p>
+
+                            <p class="text-sm font-bold">
+                                {{ job.work_mode }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Salary -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                            💰
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Salary
+                            </p>
+
+                            <p class="text-sm font-bold">
+
+                                {% if job.salary_min and job.salary_max %}
+
+                                    ₹{{ job.salary_min }} - ₹{{ job.salary_max }}
+
+                                {% elif job.salary_min %}
+
+                                    ₹{{ job.salary_min }}
+
+                                {% elif job.salary_max %}
+
+                                    ₹{{ job.salary_max }}
+
+                                {% else %}
+
+                                    Not specified
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Location -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+                            📍
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Location
+                            </p>
+
+                            <p class="text-sm font-bold">
+                                {{ job.location }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Experience -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-pink-50 text-pink-600 rounded-xl flex items-center justify-center">
+                            🎯
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Experience
+                            </p>
+
+                            <p class="text-sm font-bold">
+                                {{ job.experience }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Vacancies -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                            👥
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Vacancies
+                            </p>
+
+                            <p class="text-sm font-bold">
+                                {{ job.vacancies }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Deadline -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-red-50 text-red-600 rounded-xl flex items-center justify-center">
+                            📅
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Application Deadline
+                            </p>
+
+                            <p class="text-sm font-bold">
+                                {{ job.application_deadline|date:"d M Y" }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Posted -->
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
+                            🕐
+                        </div>
+
+                        <div>
+
+                            <p class="text-[11px] text-slate-400">
+                                Posted
+                            </p>
+
+                            <p class="text-sm font-bold">
+                                {{ job.created_at|timesince }} ago
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Apply Button -->
+                <a href="{% url 'apply_job' job.id %}"
+                   class="block text-center mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold">
+
+                    Apply for this Job
+
+                </a>
+
+            </div>
+
+
+
+            <!-- About Company -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    About Company
+                </h2>
+
+
+                {% if job.company.description %}
+
+                    <p class="text-sm text-slate-600 leading-6 mt-4">
+                        {{ job.company.description }}
+                    </p>
+
+                {% else %}
+
+                    <p class="text-sm text-slate-400 mt-4">
+                        No company description available.
+                    </p>
+
+                {% endif %}
+
+
+
+                <div class="space-y-3 mt-5">
+
+
+                    <!-- Company Name -->
+                    <div class="flex items-center gap-3">
+
+                        <span class="text-blue-600">
+                            🏢
+                        </span>
+
+                        <span class="text-xs text-slate-500">
+                            {{ job.company.company_name }}
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- Industry -->
+                    {% if job.company.industry %}
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-blue-600">
+                                💻
+                            </span>
+
+                            <span class="text-xs text-slate-500">
+                                {{ job.company.industry }}
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- Company Size -->
+                    {% if job.company.company_size %}
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-blue-600">
+                                👥
+                            </span>
+
+                            <span class="text-xs text-slate-500">
+                                {{ job.company.company_size }}
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- Company Location -->
+                    {% if job.company.location %}
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-blue-600">
+                                📍
+                            </span>
+
+                            <span class="text-xs text-slate-500">
+                                {{ job.company.location }}
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- Founded Year -->
+                    {% if job.company.founded_year %}
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-blue-600">
+                                📅
+                            </span>
+
+                            <span class="text-xs text-slate-500">
+                                Founded {{ job.company.founded_year }}
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- Email -->
+                    {% if job.company.email %}
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-blue-600">
+                                ✉
+                            </span>
+
+                            <span class="text-xs text-slate-500">
+                                {{ job.company.email }}
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- Phone -->
+                    {% if job.company.phone %}
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-blue-600">
+                                ☎
+                            </span>
+
+                            <span class="text-xs text-slate-500">
+                                {{ job.company.phone }}
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- Website -->
+                    {% if job.company.website %}
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-blue-600">
+                                🌐
+                            </span>
+
+                            <a href="{{ job.company.website }}" target="_blank" class="text-xs text-blue-600 hover:underline break-all">
+
+                                {{ job.company.website }}
+
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <!-- Job Status -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h2 class="text-lg font-extrabold">
+                    Job Status
+                </h2>
+
+                <div class="mt-4">
+
+                    {% if job.status == "Active" %}
+
+                        <span class="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold">
+                            Active
+                        </span>
+
+                    {% elif job.status == "Closed" %}
+
+                        <span class="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold">
+                            Closed
+                        </span>
+
+                    {% else %}
+
+                        <span class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold">
+                            {{ job.status }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock contain %}

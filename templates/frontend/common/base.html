@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JobNest | Find Your Dream Job</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blueMain: '#1769E0',
+                        blueDark: '#0F4DB8',
+                        orangeMain: '#FF7A00',
+                        orangeLight: '#FFF1E6'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="h-20 flex items-center justify-between">
+
+                <!-- LOGO -->
+                <a href="/" class="flex items-center gap-2">
+
+                    <div class="w-10 h-10 bg-blueMain rounded-xl
+                                flex items-center justify-center">
+
+                        <span class="text-white text-xl font-bold">
+                            C
+                        </span>
+
+                    </div>
+
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-slate-900">
+                            Career<span class="text-orangeMain">Connect</span>
+                        </h1>
+
+                        <p class="text-[10px] text-slate-400 -mt-1 tracking-widest">
+                            CAREER • CONNECT • GROW
+                        </p>
+                    </div>
+
+                </a>
+
+
+                <!-- MENU -->
+                <div class="hidden lg:flex items-center gap-9 font-semibold">
+
+                    <a href="/"
+                    class="text-slate-600 hover:text-blueMain transition">
+                        Home
+                    </a>
+
+                    <a href="{% url 'jobs' %}"
+                    class="text-slate-600 hover:text-blueMain transition">
+                        Find Jobs
+                    </a>
+
+                    <a href="{% url 'about' %}"
+                    class="text-slate-600 hover:text-blueMain transition">
+                        About
+                    </a>
+
+                </div>
+
+
+                <!-- AUTH -->
+                <div class="hidden md:flex items-center gap-3">
+
+                    {% if user.is_authenticated %}
+
+                        <!-- LOGGED IN USER -->
+                        <a href="/jobseeker_dashboard"
+                        class="flex items-center gap-3 px-3 py-2
+                                rounded-xl hover:bg-slate-50 transition">
+
+                            <!-- USER INITIAL -->
+                            <div class="w-10 h-10 rounded-full
+                                        bg-blueMain text-white
+                                        flex items-center justify-center
+                                        font-bold text-lg">
+
+                                {{ user.first_name|default:user.username|first|upper }}
+
+                            </div>
+
+                            <!-- USER NAME -->
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-slate-800">
+                                    {{ user.get_full_name|default:user.username }}
+                                </p>
+
+                                <p class="text-xs text-slate-400">
+                                    Candidate
+                                </p>
+                            </div>
+
+                        </a>
+
+                    {% else %}
+
+                        <!-- LOGIN -->
+                        <a href="/login"
+                        class="px-5 py-2.5 text-blueMain font-semibold
+                                hover:bg-blue-50 rounded-lg transition">
+                            Login
+                        </a>
+
+                        <!-- SIGN UP -->
+                        <a href="/register"
+                        class="px-5 py-2.5 bg-orangeMain text-white
+                                font-semibold rounded-lg
+                                hover:bg-orange-600 transition shadow-sm">
+                            Sign Up
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- MOBILE -->
+                <button class="lg:hidden text-2xl text-slate-700">
+                    ☰
+                </button>
+
+            </div>
+
+        </div>
+    </nav>
+
+
+    {% block contain %}
+
+    {% endblock contain %}
+
+    <footer class="bg-slate-950 text-slate-400">
+        <div class="max-w-7xl mx-auto px-6 py-14">
+
+            <div class="grid md:grid-cols-4 gap-10">
+
+
+                <!-- BRAND -->
+
+                <div>
+
+                    <h2 class="text-2xl
+                            font-extrabold
+                            text-white">
+
+                        Career<span class="text-orangeMain">
+                            Connect
+                        </span>
+
+                    </h2>
+
+                    <p class="mt-4 leading-relaxed">
+
+                        Connecting talented people with
+                        amazing career opportunities.
+
+                    </p>
+
+                </div>
+
+
+                <!-- JOB SEEKERS -->
+
+                <div>
+
+                    <h3 class="text-white
+                            font-bold mb-5">
+
+                        Job Seekers
+
+                    </h3>
+
+                    <div class="space-y-3">
+
+                        <a href="jobs.html"
+                        class="block hover:text-white">
+                            Find Jobs
+                        </a>
+
+                        <a href="register.html"
+                        class="block hover:text-white">
+                            Create Profile
+                        </a>
+
+                        <a href="#"
+                        class="block hover:text-white">
+                            Saved Jobs
+                        </a>
+
+                        <a href="#"
+                        class="block hover:text-white">
+                            My Applications
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPLOYERS -->
+
+                <div>
+
+                    <h3 class="text-white
+                            font-bold mb-5">
+
+                        Employers
+
+                    </h3>
+
+                    <div class="space-y-3">
+
+                        <a href="#"
+                        class="block hover:text-white">
+                            Post a Job
+                        </a>
+
+                        <a href="#"
+                        class="block hover:text-white">
+                            Find Candidates
+                        </a>
+
+                        <a href="#"
+                        class="block hover:text-white">
+                            Company Profile
+                        </a>
+
+                        <a href="#"
+                        class="block hover:text-white">
+                            HR Login
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONTACT -->
+
+                <div>
+
+                    <h3 class="text-white
+                            font-bold mb-5">
+
+                        Contact Us
+
+                    </h3>
+
+                    <div class="space-y-4">
+
+                        <p>
+                            📧 support@careerconnect.com
+                        </p>
+
+                        <p>
+                            📞 +91 98765 43210
+                        </p>
+
+                        <p>
+                            📍 Ahmedabad, Gujarat
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- COPYRIGHT -->
+
+            <div class="border-t
+                        border-slate-800
+                        mt-12 pt-6
+                        flex flex-col
+                        md:flex-row
+                        justify-between
+                        gap-4 text-sm">
+
+                <p>
+                    © 2026 CareerConnect.
+                    All rights reserved.
+                </p>
+
+                <div class="flex gap-6">
+
+                    <a href="#"
+                    class="hover:text-white">
+                        Privacy Policy
+                    </a>
+
+                    <a href="#"
+                    class="hover:text-white">
+                        Terms & Conditions
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    </footer>
+
+
+</body>
+</html>
